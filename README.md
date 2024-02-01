@@ -2,11 +2,13 @@
 
 Build stash plugins with React, SCSS and other libraries with TS support.
 
-### Usage
+</br>
+
+## Usage
 
 You can also use **yarn**
 
-##### 1. Generate boilerplate using [create-stash-plugin](https://github.com/Tetrax-10/create-stash-plugin)
+#### 1. Generate boilerplate using [create-stash-plugin](https://github.com/Tetrax-10/create-stash-plugin)
 
 **npm**
 
@@ -20,7 +22,7 @@ npx create-stash-plugin
 yarn create stash-plugin
 ```
 
-##### 2. Build plugin
+#### 2. Build plugin
 
 `cd` to the generated plugin folder and run
 
@@ -30,7 +32,7 @@ npm run build
 
 The plugin will be built in your `stash plugins folder`. Reload `stash`, and the plugin should be listed in the `Plugins tab`. If not, try clicking `Reload plugins` button and reload again.
 
-##### 3. Watch plugin
+#### 3. Watch plugin
 
 Run this npm command and reload your stash just once to connect `stash-plugin-builder` and `stash`
 
@@ -38,9 +40,9 @@ Run this npm command and reload your stash just once to connect `stash-plugin-bu
 npm run watch
 ```
 
-Just saving the file will auto build and reload stash.
+Just saving the source code file will auto build and reload stash.
 
-##### 4. Build plugin for distribution
+#### 4. Build plugin for distribution
 
 ```sh
 npm run build-dist
@@ -48,7 +50,9 @@ npm run build-dist
 
 This will build the plugin and output the distributable plugin to the `dist` folder. You can change this folder in `package.json`.
 
-### settings.yml
+</br>
+
+## settings.yml
 
 The `npx create-stash-plugin` command should create a basic `settings.yml` file. However, if you desire advanced configuration, please follow this structure.
 
@@ -56,12 +60,12 @@ The `npx create-stash-plugin` command should create a basic `settings.yml` file.
 id: MyPlugin
 name: My Plugin
 description: My plugin does awesome things
-version: "1.0"
+version: "1.0" # should be a string
 stashPluginSubDir: my-plugins-dev
 ui:
     javascript: ./src/index.js # main js file
     css: ./styles/main.css # main css file
-    include: # external js and css files that aren't part of main files
+    include: # external js and css files that aren't part of main ui files
         - ./lib/colors.js
         - ./scripts/injectRemoteLibraries.js
     requires:
@@ -110,7 +114,9 @@ tasks:
           - <arg to add to the exec line>
 ```
 
-### External files
+</br>
+
+## External files
 
 To include external files such as `.py`, you can place them inside the `_include` folder. The `stash-plugin-builder` will automatically copy the contents of that folder whenever it builds the plugin.
 
@@ -119,14 +125,18 @@ root/
 ├── .env
 ├── .gitignore
 ├── _include/
-│   ├── script.py
+│   ├── foo.py
 │   └── config.json
 ├── package.json
 ├── settings.yml
 └── src/
 ```
 
-### Cli Docs
+Note: `watch` command doesn't watch for external files.
+
+</br>
+
+## Cli Docs
 
 <table>
   <tr align="center">
