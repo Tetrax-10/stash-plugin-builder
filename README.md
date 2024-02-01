@@ -6,10 +6,11 @@ Build `stash` plugins with React, SCSS and other libraries with TS support.
 
 1. Support for **React, JSX, TypeScript, SCSS, SASS, CSS modules** out of the box
 2. Live reload
-3. Built-in cross-source dependency installer
-4. Deploy plugins to github with python based deployer
+3. Install npm packages and ship it with your plugins
+4. Built-in cross-source dependency installer
 5. Build Stash Themes
 6. and more...
+ <!-- Deploy plugins to github with python based deployer -->
 
 </br>
 
