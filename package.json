@@ -1,0 +1,8 @@
+{
+    "private": true,
+    "license": "MIT",
+    "repository": "Tetrax-10/stash-plugin-builder",
+    "workspaces": [
+        "packages/*"
+    ]
+}
