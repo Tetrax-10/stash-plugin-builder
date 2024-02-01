@@ -1,6 +1,6 @@
 # stash-plugin-builder
 
-Build stash plugins with React, SCSS and other libraries with TS support.
+Build `stash` plugins with React, SCSS and other libraries with TS support.
 
 </br>
 
@@ -8,7 +8,7 @@ Build stash plugins with React, SCSS and other libraries with TS support.
 
 You can also use **yarn**
 
-#### 1. Generate boilerplate using [create-stash-plugin](https://github.com/Tetrax-10/create-stash-plugin)
+### 1. Generate boilerplate using [create-stash-plugin](https://github.com/Tetrax-10/create-stash-plugin)
 
 **npm**
 
@@ -24,7 +24,7 @@ yarn create stash-plugin
 
 </br>
 
-#### 2. Build plugin
+### 2. Build plugin
 
 `cd` to the generated plugin folder and run
 
@@ -32,35 +32,35 @@ yarn create stash-plugin
 npm run build
 ```
 
-The plugin will be built in your `stash plugins folder`. Reload `stash`, and the plugin should be listed in the `Plugins tab`. If not, try clicking `Reload plugins` button and reload again.
+_The plugin will be built in your `stash plugins folder`. Reload `stash`, and the plugin should be listed in the `Plugins tab`. If not, try clicking `Reload plugins` button and reload again._
 
 </br>
 
-#### 3. Watch plugin
+### 3. Watch plugin
 
-Run this npm command and reload your stash just once to connect `stash-plugin-builder` and `stash`
+Run this npm command and reload `stash` just once to connect `stash-plugin-builder` and `stash`
 
 ```sh
 npm run watch
 ```
 
-Just saving the source code file will auto build and reload stash.
+_Just saving the source code file will auto build and reload stash._
 
 </br>
 
-#### 4. Build plugin for distribution
+### 4. Build plugin for distribution
 
 ```sh
 npm run build-dist
 ```
 
-This will build the plugin and output the distributable plugin to the `dist` folder. You can change this folder in `package.json`.
+_This will build the plugin and output the distributable plugin to the `dist` folder. You can change this folder in `package.json`._
 
 </br>
 
-## settings.yml
+## settings.yml structure
 
-The `npx create-stash-plugin` command should create a basic `settings.yml` file. However, if you desire advanced configuration, please follow this structure.
+The `npx create-stash-plugin` command should generate a basic `settings.yml`. However, if you wish to configure advanced settings, please adhere to this structure. The `settings.yml` follows the same format as the [official plugin yml](https://docs.stashapp.cc/in-app-manual/plugins/#plugin-configuration-file-format) format, except few changes. See the example below:
 
 ```yml
 id: MyPlugin
@@ -73,31 +73,10 @@ ui:
     css: ./styles/main.css # main css file
     include: # external js and css files that aren't part of main ui files
         - ./lib/colors.js
-        - ./scripts/injectRemoteLibraries.js
+        - ./scripts/injectRemoteCode.js
     requires:
-        - id: MyPluginLibrary # local plugin id
-        - id: StashUserscriptLibrary # cross-source plugin id
-          source: https://stashapp.github.io/CommunityScripts/stable/index.yml # cross-source plugin source url
-```
-
-</br>
-
-The `settings.yml` file adopts the structure of official [plugin.yml](https://docs.stashapp.cc/in-app-manual/plugins/#plugin-configuration-file-format), allowing you to follow the same format. See the example below:
-
-```yml
-id: MyPlugin
-name: My Plugin
-description: My plugin does awesome things
-version: "1.0"
-stashPluginSubDir: my-plugins-dev
-ui:
-    javascript: ./src/index.js # main js file
-    css: ./styles/main.css # main css file
-    include: # external js and css files that aren't part of main files
-        - ./lib/colors.js
-        - ./scripts/injectRemoteLibraries.js
-    requires:
-        - id: MyPluginLibrary # local plugin id
+        - id: MyUtilsLibrary # local plugin id
+        - id: MyReactComponentsLibrary # local plugin id
         - id: StashUserscriptLibrary # cross-source plugin id
           source: https://stashapp.github.io/CommunityScripts/stable/index.yml # cross-source plugin source url
     assets: # optional list of assets
@@ -126,7 +105,7 @@ tasks:
 
 ## External files
 
-To include external files such as `.py`, you can place them inside the `_include` folder. The `stash-plugin-builder` will automatically copy the contents of that folder whenever it builds the plugin.
+To include external files such as `.py`, you can place them inside the **`_include`** folder. The `stash-plugin-builder` will automatically copy the contents of that folder whenever it builds the plugin.
 
 ```lua
 root/
@@ -140,7 +119,7 @@ root/
 └── src/
 ```
 
-Note: `watch` command doesn't watch for external files.
+_Note: `watch` command doesn't watch for external files._
 
 </br>
 
