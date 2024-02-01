@@ -104,7 +104,7 @@ ui:
 # the following are used for plugin tasks only
 exec:
     - python
-    - {pluginDir}/foo.py
+    - "{pluginDir}/foo.py" # values with variable should be wrapped with double quotes
 interface: raw
 errLog: error
 tasks:
