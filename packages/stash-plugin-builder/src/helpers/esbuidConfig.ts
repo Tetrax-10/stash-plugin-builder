@@ -20,6 +20,7 @@ export default function getEsbuildOptions(settings: Settings): esbuild.BuildOpti
 
     return {
         platform: "browser",
+        format: "esm",
         external: Object.keys(externalPackages),
         bundle: true,
         plugins: [
