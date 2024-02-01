@@ -22,6 +22,8 @@ npx create-stash-plugin
 yarn create stash-plugin
 ```
 
+</br>
+
 #### 2. Build plugin
 
 `cd` to the generated plugin folder and run
@@ -32,6 +34,8 @@ npm run build
 
 The plugin will be built in your `stash plugins folder`. Reload `stash`, and the plugin should be listed in the `Plugins tab`. If not, try clicking `Reload plugins` button and reload again.
 
+</br>
+
 #### 3. Watch plugin
 
 Run this npm command and reload your stash just once to connect `stash-plugin-builder` and `stash`
@@ -41,6 +45,8 @@ npm run watch
 ```
 
 Just saving the source code file will auto build and reload stash.
+
+</br>
 
 #### 4. Build plugin for distribution
 
@@ -73,6 +79,8 @@ ui:
         - id: StashUserscriptLibrary # cross-source plugin id
           source: https://stashapp.github.io/CommunityScripts/stable/index.yml # cross-source plugin source url
 ```
+
+</br>
 
 The `settings.yml` file adopts the structure of official [plugin.yml](https://docs.stashapp.cc/in-app-manual/plugins/#plugin-configuration-file-format), allowing you to follow the same format. See the example below:
 
