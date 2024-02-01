@@ -1,10 +1,9 @@
 import chalk from "chalk"
 import path from "path"
-import os from "os"
 import * as esbuild from "esbuild"
 
 import { PluginBuildOptions } from "../interfaces/interface"
-import { createFolder, fsExsists, writeFile, deleteFile, getAsset, unixPath, getBuildPath } from "../utils/glob"
+import { createFolder, fsExsists, writeFile, deleteFile, getAsset, unixPath, getBuildPath, getTempPath } from "../utils/glob"
 import { initReloadServer, webSocketData } from "../helpers/reloadServer"
 import buildPluginYml from "./yml"
 import Shared from "../shared/shared"
@@ -14,8 +13,8 @@ export default async function buildPlugin({ mainJsPath, mainCssPath, outDir, wat
     const compiledJsPath = getBuildPath(`${settings.id}.js`)
     const compiledCssPath = getBuildPath(`${settings.id}.css`)
 
-    const tempPath = path.join(os.tmpdir(), "stash-plugin-builder")
-    const tempIndexJsPath = path.join(tempPath, "index.js")
+    const tempPath = getTempPath("stash-plugin-builder")
+    const tempIndexJsPath = getTempPath("stash-plugin-builder/index.js")
 
     const esbuildEntryPoints: string[] = []
 
@@ -25,10 +24,10 @@ export default async function buildPlugin({ mainJsPath, mainCssPath, outDir, wat
     const isProcessCss = mainCssPath && fsExsists(mainCssPath)
 
     deleteFile(tempPath)
+    createFolder(tempPath)
 
     // add main js to esbuild entry points
     if (isProcessJS) {
-        createFolder(tempPath)
         writeFile(tempIndexJsPath, getAsset("wrapper.js").replace(/\$replace/g, mainJsPath))
         esbuildEntryPoints.push(tempIndexJsPath)
     }
@@ -43,14 +42,6 @@ export default async function buildPlugin({ mainJsPath, mainCssPath, outDir, wat
         esbuildEntryPoints.push(...availableIncludes)
     }
 
-    esbuildOptions = {
-        entryPoints: esbuildEntryPoints,
-        outdir: outDir,
-        minify: minify,
-        write: false,
-        ...esbuildOptions,
-    }
-
     // filter cross-source dependencies
     if (settings.ui.requires?.length) {
         for (let plugin of settings.ui.requires) {
@@ -60,6 +51,23 @@ export default async function buildPlugin({ mainJsPath, mainCssPath, outDir, wat
                 Shared.dependencies.push(plugin.id)
             }
         }
+
+        // add esbuild entry point for dependencyInstaller.js
+        if (Shared.crossSourceDependencies.length) {
+            const dependencyInstallerPath = getTempPath("stash-plugin-builder/dependencyInstaller.js")
+            const dependencyInstallerContent = getAsset("dependencyInstaller.js").replace(/\$replace/g, JSON.stringify(Shared.crossSourceDependencies))
+            writeFile(dependencyInstallerPath, dependencyInstallerContent)
+
+            esbuildEntryPoints.push(dependencyInstallerPath)
+        }
+    }
+
+    esbuildOptions = {
+        entryPoints: esbuildEntryPoints,
+        outdir: outDir,
+        minify: minify,
+        write: false,
+        ...esbuildOptions,
     }
 
     async function afterBundle(result: esbuild.BuildResult) {
@@ -88,12 +96,6 @@ export default async function buildPlugin({ mainJsPath, mainCssPath, outDir, wat
                 compiledJs = minify ? compiledJs.trim() : compiledJs
                 writeFile(compiledJsPath, compiledJs, index === 0 ? false : true)
             })
-
-            // append cross-source dependencies installer code
-            if (Shared.crossSourceDependencies.length) {
-                const crossSourceDependenciesInstallerCode = getAsset("dependencyInstaller.js").replace(/\$replace/g, JSON.stringify(Shared.crossSourceDependencies))
-                writeFile(compiledJsPath, crossSourceDependenciesInstallerCode, true)
-            }
         }
 
         // write all css contents
