@@ -7,6 +7,7 @@ import { isUpperCamelCase } from "./utils/utils"
 import { createFolder, unixPath, getYml } from "./utils/glob"
 import getEsbuildOptions from "./helpers/esbuidConfig"
 import buildPlugin from "./builder/plugin"
+import Shared from "./shared/shared"
 
 export default async function build({ mainJsPath, mainCssPath, outDir, watch, minify }: BuildOptions) {
     let settings
@@ -47,9 +48,12 @@ export default async function build({ mainJsPath, mainCssPath, outDir, watch, mi
     outDir = path.join(outDir, settings.id)
     createFolder(outDir)
 
-    const esbuildOptions = getEsbuildOptions(settings)
-
     mainJsPath = unixPath(mainJsPath)
+
+    Shared.outDir = outDir
+    Shared.settings = settings
+
+    const esbuildOptions = getEsbuildOptions(settings)
 
     await buildPlugin({
         mainJsPath,

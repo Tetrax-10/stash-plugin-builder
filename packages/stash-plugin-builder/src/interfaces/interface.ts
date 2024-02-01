@@ -32,3 +32,10 @@ export interface Settings {
         ]
     }
 }
+
+export interface SharedInterface {
+    settings: Settings
+    outDir: string
+    dependencies: string[]
+    crossSourceDependencies: object[]
+}

@@ -1,7 +1,10 @@
 import chalk from "chalk"
 import fs from "fs"
 import path from "path"
+import os from "os"
 import { parse as parseYml, stringify as stringifyYml } from "yaml"
+
+import Shared from "../shared/shared"
 
 export function unixPath(str: string): string {
     if (str) {
@@ -71,4 +74,16 @@ export function getYml(filePath: string, exitOnErr?: boolean): object | null {
 
 export function writeYml(filePath: string, content: string | object) {
     writeFile(filePath, stringifyYml(content).replace(/(version: )"([^"]+)"/g, "$1$2"))
+}
+
+export function getTempPath(_path: string): string {
+    return path.join(os.tmpdir(), _path)
+}
+
+export function getBuildPath(_path = ""): string {
+    return path.join(Shared.outDir, _path)
+}
+
+export function copy(src: string, des: string) {
+    fs.cpSync(src, des, { recursive: true })
 }

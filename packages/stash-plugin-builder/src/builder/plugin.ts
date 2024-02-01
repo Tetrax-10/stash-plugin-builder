@@ -4,13 +4,15 @@ import os from "os"
 import * as esbuild from "esbuild"
 
 import { PluginBuildOptions } from "../interfaces/interface"
-import { createFolder, fsExsists, writeFile, deleteFile, getAsset, unixPath } from "../utils/glob"
+import { createFolder, fsExsists, writeFile, deleteFile, getAsset, unixPath, getBuildPath } from "../utils/glob"
 import { initReloadServer, webSocketData } from "../helpers/reloadServer"
 import buildPluginYml from "./yml"
+import Shared from "../shared/shared"
+import { buildExternalFiles } from "./externalFiles"
 
 export default async function buildPlugin({ mainJsPath, mainCssPath, outDir, watch, minify, settings, esbuildOptions }: PluginBuildOptions) {
-    const compiledJsPath = path.join(outDir, `${settings.id}.js`)
-    const compiledCssPath = path.join(outDir, `${settings.id}.css`)
+    const compiledJsPath = getBuildPath(`${settings.id}.js`)
+    const compiledCssPath = getBuildPath(`${settings.id}.css`)
 
     const tempPath = path.join(os.tmpdir(), "stash-plugin-builder")
     const tempIndexJsPath = path.join(tempPath, "index.js")
@@ -50,14 +52,12 @@ export default async function buildPlugin({ mainJsPath, mainCssPath, outDir, wat
     }
 
     // filter cross-source dependencies
-    const dependencies: string[] = []
-    const crossSourceDependencies: object[] = []
     if (settings.ui.requires?.length) {
         for (let plugin of settings.ui.requires) {
             if (plugin.source) {
-                crossSourceDependencies.push(plugin)
+                Shared.crossSourceDependencies.push(plugin)
             } else {
-                dependencies.push(plugin.id)
+                Shared.dependencies.push(plugin.id)
             }
         }
     }
@@ -90,8 +90,8 @@ export default async function buildPlugin({ mainJsPath, mainCssPath, outDir, wat
             })
 
             // append cross-source dependencies installer code
-            if (crossSourceDependencies.length) {
-                const crossSourceDependenciesInstallerCode = getAsset("dependencyInstaller.js").replace(/\$replace/g, JSON.stringify(crossSourceDependencies))
+            if (Shared.crossSourceDependencies.length) {
+                const crossSourceDependenciesInstallerCode = getAsset("dependencyInstaller.js").replace(/\$replace/g, JSON.stringify(Shared.crossSourceDependencies))
                 writeFile(compiledJsPath, crossSourceDependenciesInstallerCode, true)
             }
         }
@@ -105,7 +105,8 @@ export default async function buildPlugin({ mainJsPath, mainCssPath, outDir, wat
         }
 
         // builds yml file for the plugin
-        buildPluginYml(outDir, settings, dependencies, compiledCode?.js?.length, compiledCode?.css?.length)
+        buildPluginYml(compiledCode?.js?.length, compiledCode?.css?.length)
+        buildExternalFiles()
 
         console.log(chalk.green(`${settings.name} built ✅`))
 
