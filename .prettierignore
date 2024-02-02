@@ -2,4 +2,5 @@ LICENSE
 package-lock.json
 node_modules
 dist
+assets
 template
