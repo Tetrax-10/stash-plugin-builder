@@ -1,6 +1,7 @@
 import path from "path"
 import chalk from "chalk"
-const WebSocket = require("ws")
+// const WebSocket = require("ws")
+import { WebSocketServer } from "ws"
 
 import { writeFile, getAsset, writeYml, createFolder } from "../utils/glob"
 
@@ -39,7 +40,7 @@ export function installReloadClient(stashPluginDir: string) {
 }
 
 export function initReloadServer(stashPluginDir: string) {
-    const server = new WebSocket.Server({ port: 8082 })
+    const server = new WebSocketServer({ port: 8082 })
 
     installReloadClient(stashPluginDir)
 

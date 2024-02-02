@@ -3,8 +3,13 @@ import fs from "fs"
 import path from "path"
 import os from "os"
 import { parse as parseYml, stringify as stringifyYml } from "yaml"
+import { fileURLToPath } from "url"
 
 import Shared from "../shared/shared"
+
+// @ts-ignore
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 export function unixPath(str: string): string {
     if (str) {

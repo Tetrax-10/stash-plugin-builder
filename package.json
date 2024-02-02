@@ -4,5 +4,11 @@
     "repository": "Tetrax-10/stash-plugin-builder",
     "workspaces": [
         "packages/*"
-    ]
+    ],
+    "scripts": {
+        "format": "prettier --write ."
+    },
+    "devDependencies": {
+        "prettier": "^3.2.4"
+    }
 }

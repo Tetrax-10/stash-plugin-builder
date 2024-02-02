@@ -6,7 +6,7 @@ import { replaceContent } from "../utils/utils"
 import { Settings } from "../interface/interface"
 
 export function generateGitIgnore() {
-    copy(getAsset("gitignore", true), getProjectPath(".gitignore"))
+    copy(getAsset("gitignore.txt", true), getProjectPath(".gitignore"))
 }
 
 export function generatePackageJson() {

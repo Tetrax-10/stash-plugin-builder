@@ -28,7 +28,7 @@ export interface Settings {
             {
                 id: string
                 source?: string
-            }
+            },
         ]
     }
 }

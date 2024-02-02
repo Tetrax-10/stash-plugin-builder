@@ -1,8 +1,10 @@
 import * as esbuild from "esbuild"
 import autoprefixer from "autoprefixer"
-import { externalGlobalPlugin } from "esbuild-plugin-external-global"
+import { globalExternals } from "@fal-works/esbuild-plugin-global-externals"
 
-const postCssPlugin = require("@baurine/esbuild-plugin-postcss3")
+// const postCssPlugin = require("@baurine/esbuild-plugin-postcss3")
+// @ts-ignore
+import postCssPlugin from "@baurine/esbuild-plugin-postcss3"
 
 import { Settings } from "../interfaces/interface"
 
@@ -30,7 +32,7 @@ export default function getEsbuildOptions(settings: Settings): esbuild.BuildOpti
                     generateScopedName: `[name]__[local]___[hash:base64:5]_${settings.id}`,
                 },
             }),
-            externalGlobalPlugin(externalPackages),
+            globalExternals(externalPackages),
         ],
     }
 }
