@@ -1,6 +1,6 @@
 {
     "name": "stash-plugin-builder",
-    "version": "0.0.2-alpha",
+    "version": "0.0.3-alpha",
     "description": "Build stash plugins with React, SCSS and other libraries with TS support",
     "license": "MIT",
     "repository": {
@@ -28,7 +28,7 @@
     },
     "dependencies": {
         "@baurine/esbuild-plugin-postcss3": "^0.3.3",
-        "chalk": "^4.1.2",
+        "chalk": "4.1.2",
         "dotenv": "^16.4.1",
         "esbuild": "^0.20.0",
         "esbuild-plugin-external-global": "^1.0.1",

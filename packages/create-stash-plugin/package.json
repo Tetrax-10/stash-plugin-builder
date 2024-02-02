@@ -1,6 +1,6 @@
 {
     "name": "create-stash-plugin",
-    "version": "0.0.7-alpha",
+    "version": "0.0.8-alpha",
     "description": "Generates boilerplate code for stash-plugin-builder",
     "license": "MIT",
     "repository": {
@@ -27,7 +27,7 @@
         "watch": "npm run build -- --watch"
     },
     "dependencies": {
-        "chalk": "^4.1.2",
+        "chalk": "4.1.2",
         "cross-spawn": "^7.0.3",
         "inquirer": "^8.2.6",
         "yaml": "^2.3.4"
