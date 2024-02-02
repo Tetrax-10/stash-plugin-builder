@@ -27,12 +27,12 @@ inquirer.prompt(getQuiz()).then(async (ans: Answers) => {
         generateTSConfig()
         generateEnv()
 
-        // const packageManager = (process.env.npm_config_user_agent || "").indexOf("yarn") === 0 ? "yarn" : "npm"
-        // const exeResult = spawn.sync(`cd ${projectDir} && ${packageManager} ${packageManager === "npm" ? "install" : "add"} -D ${Shared.devDependencies.sort().join(" ")}`, {
-        //     stdio: "inherit",
-        //     shell: true,
-        // })
-        // if (exeResult.error) throw "Couldn't install dependencies: " + exeResult.error.message
+        const packageManager = (process.env.npm_config_user_agent || "").indexOf("yarn") === 0 ? "yarn" : "npm"
+        const exeResult = spawn.sync(`cd ${projectDir} && ${packageManager} ${packageManager === "npm" ? "install" : "add"} -D ${Shared.devDependencies.sort().join(" ")}`, {
+            stdio: "inherit",
+            shell: true,
+        })
+        if (exeResult.error) throw "Couldn't install dependencies: " + exeResult.error.message
 
         console.log(`\n${chalk.green("Success: ")}${ans.isReact ? "React " : ""}Plugin boilerplate has been generated`)
     } catch (err) {
