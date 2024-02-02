@@ -81,8 +81,8 @@ export function writeYml(filePath: string, content: string | object) {
     writeFile(filePath, stringifyYml(content).replace(/(version: )"([^"]+)"/g, "$1$2"))
 }
 
-export function getTempPath(_path: string): string {
-    return path.join(os.tmpdir(), _path)
+export function getTempPath(_path = ""): string {
+    return path.join(os.tmpdir(), "stash-plugin-builder", _path)
 }
 
 export function getBuildPath(_path = ""): string {

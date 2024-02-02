@@ -8,13 +8,14 @@ import { initReloadServer, webSocketData } from "../helpers/reloadServer"
 import buildPluginYml from "./yml"
 import Shared from "../shared/shared"
 import { buildExternalFiles } from "./externalFiles"
+import { replaceContent } from "../utils/utils"
 
 export default async function buildPlugin({ mainJsPath, mainCssPath, outDir, watch, minify, settings, esbuildOptions }: PluginBuildOptions) {
     const compiledJsPath = getBuildPath(`${settings.id}.js`)
     const compiledCssPath = getBuildPath(`${settings.id}.css`)
 
-    const tempPath = getTempPath("stash-plugin-builder")
-    const tempIndexJsPath = getTempPath("stash-plugin-builder/index.js")
+    const tempPath = getTempPath()
+    const tempIndexJsPath = getTempPath("index.js")
 
     const esbuildEntryPoints: string[] = []
 
@@ -28,7 +29,7 @@ export default async function buildPlugin({ mainJsPath, mainCssPath, outDir, wat
 
     // add main js to esbuild entry points
     if (isProcessJS) {
-        writeFile(tempIndexJsPath, getAsset("wrapper.js").replace(/\$replace/g, mainJsPath))
+        writeFile(tempIndexJsPath, replaceContent(getAsset("wrapper.js"), [mainJsPath]))
         esbuildEntryPoints.push(tempIndexJsPath)
     }
 
@@ -54,8 +55,8 @@ export default async function buildPlugin({ mainJsPath, mainCssPath, outDir, wat
 
         // add esbuild entry point for dependencyInstaller.js
         if (Shared.crossSourceDependencies.length) {
-            const dependencyInstallerPath = getTempPath("stash-plugin-builder/dependencyInstaller.js")
-            const dependencyInstallerContent = getAsset("dependencyInstaller.js").replace(/\$replace/g, JSON.stringify(Shared.crossSourceDependencies))
+            const dependencyInstallerPath = getTempPath("dependencyInstaller.js")
+            const dependencyInstallerContent = replaceContent(getAsset("dependencyInstaller.js"), [JSON.stringify(Shared.crossSourceDependencies)])
             writeFile(dependencyInstallerPath, dependencyInstallerContent)
 
             esbuildEntryPoints.push(dependencyInstallerPath)
@@ -112,7 +113,7 @@ export default async function buildPlugin({ mainJsPath, mainCssPath, outDir, wat
 
         console.log(chalk.green(`${settings.name} built ✅`))
 
-        // tells stash-plugin-builder reload client to reload the stash website
+        // tells stash-plugin-builder's reload client to reload the stash website
         if (watch && webSocketData.socket?.send) {
             webSocketData.socket.send("reload")
         } else if (webSocketData.connected) {
