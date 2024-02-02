@@ -1,14 +1,12 @@
 import * as esbuild from "esbuild"
 import autoprefixer from "autoprefixer"
-import { globalExternals } from "@fal-works/esbuild-plugin-global-externals"
-
-// const postCssPlugin = require("@baurine/esbuild-plugin-postcss3")
 // @ts-ignore
 import postCssPlugin from "@baurine/esbuild-plugin-postcss3"
+import { globalExternals } from "@fal-works/esbuild-plugin-global-externals"
 
-import { Settings } from "../interfaces/interface"
+import Shared from "../shared/shared"
 
-export default function getEsbuildOptions(settings: Settings): esbuild.BuildOptions {
+export default function getEsbuildOptions(): esbuild.BuildOptions {
     const externalPackages = {
         react: "PluginApi.React",
         "react-dom": "PluginApi.ReactDOM",
@@ -29,7 +27,7 @@ export default function getEsbuildOptions(settings: Settings): esbuild.BuildOpti
             postCssPlugin.default({
                 plugins: [autoprefixer],
                 modules: {
-                    generateScopedName: `[name]__[local]___[hash:base64:5]_${settings.id}`,
+                    generateScopedName: `[name]__[local]___[hash:base64:5]_${Shared.settings.id}`,
                 },
             }),
             globalExternals(externalPackages),

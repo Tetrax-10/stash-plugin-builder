@@ -1,19 +1,5 @@
 import * as esbuild from "esbuild"
 
-export interface BuildOptions {
-    watch: boolean
-    minify: boolean
-    outDir?: string
-    mainJsPath: string
-    mainCssPath: string
-}
-
-export interface PluginBuildOptions extends BuildOptions {
-    outDir: string
-    settings: Settings
-    esbuildOptions?: esbuild.BuildOptions
-}
-
 export interface Settings {
     id: string
     name: string
@@ -31,11 +17,27 @@ export interface Settings {
             },
         ]
     }
+    include?: string[]
+}
+
+export interface parsedArgs {
+    minify: boolean
+    watch: boolean
+    outDir: string
+    mainJsPath: string
+    mainCssPath: string
 }
 
 export interface SharedInterface {
+    args: parsedArgs
     settings: Settings
-    outDir: string
+    pluginOutDir: string
+    esbuildOptions: esbuild.BuildOptions
     dependencies: string[]
     crossSourceDependencies: object[]
+}
+
+export interface CompiledCode {
+    js?: string[]
+    css?: string[]
 }

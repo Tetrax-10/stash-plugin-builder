@@ -7,7 +7,6 @@ import { fileURLToPath } from "url"
 
 import Shared from "../shared/shared"
 
-// @ts-ignore
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
@@ -19,7 +18,7 @@ export function unixPath(str: string): string {
     }
 }
 
-function getFileContents(filePath: string): string {
+export function getFileContents(filePath: string): string {
     return fs.readFileSync(filePath, "utf-8")
 }
 
@@ -86,9 +85,24 @@ export function getTempPath(_path = ""): string {
 }
 
 export function getBuildPath(_path = ""): string {
-    return path.join(Shared.outDir, _path)
+    return path.join(Shared.pluginOutDir, _path)
 }
 
 export function copy(src: string, des: string) {
     fs.cpSync(src, des, { recursive: true })
+}
+
+export function isPathType(_path: string, type: "file" | "dir"): boolean {
+    if (!fsExsists(_path)) return false
+
+    const stats = fs.lstatSync(_path)
+
+    switch (type) {
+        case "file":
+            return stats.isFile()
+        case "dir":
+            return stats.isDirectory()
+        default:
+            return false
+    }
 }

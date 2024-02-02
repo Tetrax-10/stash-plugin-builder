@@ -103,11 +103,10 @@ export function generateCss() {
 
     let content = getAsset("css/main.css")
     if (Shared.ans.cssFramework === "SASS") {
-        content = ".boilerplate-code\n  display: none"
+        content = ".boilerplate-code\n    display: none"
     }
 
     Shared.mainCssPath = Shared.ans.isPluginWithCss ? "styles" : "theme"
-    // createFolder(getProjectPath(Shared.mainCssPath))
 
     writeFile(getProjectPath(`${Shared.mainCssPath}/main.${Shared.cssExt}`), content)
 }

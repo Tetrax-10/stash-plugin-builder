@@ -1,6 +1,5 @@
 import path from "path"
 import chalk from "chalk"
-// const WebSocket = require("ws")
 import { WebSocketServer } from "ws"
 
 import { writeFile, getAsset, writeYml, createFolder } from "../utils/glob"

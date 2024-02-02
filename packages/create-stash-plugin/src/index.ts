@@ -10,7 +10,6 @@ import Shared from "./shared/shared"
 import { determineCssExt, generateCss, generateEnv, generateGitIgnore, generateIndexJs, generatePackageJson, generateSettings, generateTSConfig } from "./generator/generate"
 import { Answers } from "./interface/interface"
 
-// @ts-ignore
 inquirer.prompt(getQuiz()).then(async (ans: Answers) => {
     try {
         const projectDir = path.join(".", ans.id)

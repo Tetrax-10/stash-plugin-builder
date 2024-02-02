@@ -96,6 +96,10 @@ ui:
             - http://alloweddomain.com
         connect-src:
             - http://alloweddomain.com
+include:
+    - ./assets # all contents inside assets folder will be copied to the output folder
+    - ./python/foo.py # foo.py will be copied to the output folder
+    - ./settings/external/config.json # config.json will be copied to the output folder
 # the following are used for plugin tasks only
 exec:
     - python
@@ -123,26 +127,6 @@ ui:
         - id: TetraxUserscriptLibrary # cross-source plugin id
           source: https://tetrax-10.github.io/stash-stuffs/index.yml # cross-source plugin source url
 ```
-
-</br>
-
-## External files
-
-To include external files such as `.py`, you can place them inside the **`_include`** folder. The `stash-plugin-builder` will automatically copy the contents of that folder whenever it builds the plugin.
-
-```lua
-root/
-├── .env
-├── .gitignore
-├── _include/
-│   ├── foo.py
-│   └── config.json
-├── package.json
-├── settings.yml
-└── src/
-```
-
-_Note: `watch` command doesn't watch for external files._
 
 </br>
 
@@ -186,3 +170,7 @@ _Note: `watch` command doesn't watch for external files._
     <td align="left">main CSS file path from settings.yml</td>
   </tr>
 </table>
+
+## Credits
+
+Inspired from [spicetify-creator](https://github.com/spicetify/spicetify-creator) by [@FlafyDev](https://github.com/FlafyDev)

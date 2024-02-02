@@ -1,4 +1,3 @@
-import { Settings } from "../interfaces/interface"
 import Shared from "../shared/shared"
 import { getBuildPath, writeFile, writeYml } from "../utils/glob"
 
@@ -10,6 +9,7 @@ export default function buildPluginYml(isProcessJS: number | undefined, isProces
     delete pluginYml.stashPluginDir
     delete pluginYml.stashPluginSubDir
     delete pluginYml.ui?.include
+    delete pluginYml.include
     if (Shared.dependencies.length) {
         pluginYml.ui.requires = Shared.dependencies
     } else {

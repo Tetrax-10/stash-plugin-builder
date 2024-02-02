@@ -2,66 +2,56 @@ import chalk from "chalk"
 import path from "path"
 import "dotenv/config"
 
-import { BuildOptions, Settings } from "./interfaces/interface"
+import Shared from "./shared/shared"
 import { isUpperCamelCase } from "./utils/utils"
 import { createFolder, unixPath, getYml } from "./utils/glob"
 import getEsbuildOptions from "./helpers/esbuidConfig"
 import buildPlugin from "./builder/plugin"
-import Shared from "./shared/shared"
 
-export default async function build({ mainJsPath, mainCssPath, outDir, watch, minify }: BuildOptions) {
-    let settings
+import { Settings } from "./interfaces/interface"
+
+export default async function build() {
     const settingsYml = getYml("./settings.yml", true)
 
     if (settingsYml === null) {
         console.log(chalk.red("settings.yml: missing settings.yml"))
         process.exit()
     } else {
-        settings = settingsYml as Settings
+        Shared.settings = settingsYml as Settings
     }
 
-    settings.stashPluginDir = process.env.STASH_PLUGIN_DIR
+    Shared.settings.stashPluginDir = process.env.STASH_PLUGIN_DIR
 
-    mainJsPath = mainJsPath ?? settings.ui.javascript ?? ""
-    mainCssPath = mainCssPath ?? settings.ui.css ?? ""
+    Shared.args.mainJsPath = unixPath(Shared.args.mainJsPath ?? Shared.settings.ui.javascript ?? "")
+    Shared.args.mainCssPath = unixPath(Shared.args.mainCssPath ?? Shared.settings.ui.css ?? "")
 
-    if (!outDir) {
-        if (settings.stashPluginDir && settings.stashPluginSubDir) {
-            outDir = path.join(settings.stashPluginDir, settings.stashPluginSubDir)
-        } else if (settings.stashPluginDir) {
-            outDir = settings.stashPluginDir
-        } else {
-            console.log(chalk.red(".env: 'STASH_PLUGIN_DIR' value is missing"))
-            process.exit()
-        }
-    } else if (!isUpperCamelCase(settings.id)) {
+    if (!isUpperCamelCase(Shared.settings.id)) {
         console.log(chalk.red("settings.yml: 'id' value should be upper camel case. eg: 'MyStashPlugin'"))
         process.exit()
-    } else if (typeof settings.version !== "string") {
+    } else if (typeof Shared.settings.version !== "string") {
         console.log(chalk.red("settings.yml: 'version' value should be a string. eg: version: \"1.0\""))
         process.exit()
-    } else if (!(settings.name && (settings.ui.javascript || settings.ui.css))) {
+    } else if (!(Shared.settings.name && (Shared.settings.ui.javascript || Shared.settings.ui.css))) {
         console.log(chalk.red("settings.yml: some required keys and values are missing"))
         process.exit()
     }
 
-    outDir = path.join(outDir, settings.id)
-    createFolder(outDir)
+    if (!Shared.args.outDir) {
+        if (Shared.settings.stashPluginDir && Shared.settings.stashPluginSubDir) {
+            Shared.args.outDir = path.join(Shared.settings.stashPluginDir, Shared.settings.stashPluginSubDir)
+        } else if (Shared.settings.stashPluginDir) {
+            Shared.args.outDir = Shared.settings.stashPluginDir
+        } else {
+            console.log(chalk.red(".env: 'STASH_PLUGIN_DIR' value is missing"))
+            process.exit()
+        }
+    }
 
-    mainJsPath = unixPath(mainJsPath)
+    Shared.pluginOutDir = path.join(Shared.args.outDir, Shared.settings.id)
 
-    Shared.outDir = outDir
-    Shared.settings = settings
+    createFolder(Shared.pluginOutDir)
 
-    const esbuildOptions = getEsbuildOptions(settings)
+    Shared.esbuildOptions = getEsbuildOptions()
 
-    await buildPlugin({
-        mainJsPath,
-        mainCssPath,
-        outDir,
-        watch,
-        minify,
-        settings,
-        esbuildOptions,
-    })
+    await buildPlugin()
 }

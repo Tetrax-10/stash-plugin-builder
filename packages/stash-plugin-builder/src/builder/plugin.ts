@@ -1,51 +1,60 @@
-import chalk from "chalk"
 import path from "path"
+import chalk from "chalk"
 import * as esbuild from "esbuild"
 
-import { PluginBuildOptions } from "../interfaces/interface"
-import { createFolder, fsExsists, writeFile, deleteFile, getAsset, unixPath, getBuildPath, getTempPath } from "../utils/glob"
-import { initReloadServer, webSocketData } from "../helpers/reloadServer"
-import buildPluginYml from "./yml"
 import Shared from "../shared/shared"
+import buildPluginYml from "./yml"
+import { isJs, replaceContent } from "../utils/utils"
 import { buildExternalFiles } from "./externalFiles"
-import { replaceContent } from "../utils/utils"
+import { initReloadServer, webSocketData } from "../helpers/reloadServer"
+import { createFolder, fsExsists, writeFile, deleteFile, getAsset, unixPath, getBuildPath, getTempPath, getFileContents } from "../utils/glob"
 
-export default async function buildPlugin({ mainJsPath, mainCssPath, outDir, watch, minify, settings, esbuildOptions }: PluginBuildOptions) {
-    const compiledJsPath = getBuildPath(`${settings.id}.js`)
-    const compiledCssPath = getBuildPath(`${settings.id}.css`)
+import { CompiledCode } from "../interfaces/interface"
+
+export default async function buildPlugin() {
+    const compiledJsPath = getBuildPath(`${Shared.settings.id}.js`)
+    const compiledCssPath = getBuildPath(`${Shared.settings.id}.css`)
 
     const tempPath = getTempPath()
     const tempIndexJsPath = getTempPath("index.js")
 
     const esbuildEntryPoints: string[] = []
 
-    mainJsPath = mainJsPath ? unixPath(path.resolve(mainJsPath)) : ""
+    const mainJsAbsolutePath = Shared.args.mainJsPath ? unixPath(path.resolve(Shared.args.mainJsPath)) : ""
 
-    const isProcessJS = mainJsPath && fsExsists(mainJsPath)
-    const isProcessCss = mainCssPath && fsExsists(mainCssPath)
+    const isProcessJS = mainJsAbsolutePath && fsExsists(mainJsAbsolutePath)
+    const isProcessCss = Shared.args.mainCssPath && fsExsists(Shared.args.mainCssPath)
 
     deleteFile(tempPath)
     createFolder(tempPath)
 
     // add main js to esbuild entry points
     if (isProcessJS) {
-        writeFile(tempIndexJsPath, replaceContent(getAsset("wrapper.js"), [mainJsPath]))
+        writeFile(tempIndexJsPath, replaceContent(getAsset("pluginWrapper.js"), [mainJsAbsolutePath]))
         esbuildEntryPoints.push(tempIndexJsPath)
     }
 
     // add main css to esbuild entry points
-    if (isProcessCss) esbuildEntryPoints.push(mainCssPath)
+    if (isProcessCss) esbuildEntryPoints.push(Shared.args.mainCssPath)
 
-    // add include files from settings.yml to esbuild entry point
-    if (settings.ui.include?.length) {
-        const availableIncludes = fsExsists(settings.ui.include)
-        // @ts-ignore
-        esbuildEntryPoints.push(...availableIncludes)
+    // add ui include files to esbuild entry point
+    if (typeof Shared.settings.ui.include === "object" && Shared.settings.ui.include?.length) {
+        const availableIncludes = fsExsists(Shared.settings.ui.include)
+        if (typeof availableIncludes === "object" && availableIncludes.length) {
+            for (let _path of availableIncludes) {
+                let filePath = _path
+                if (isJs(_path)) {
+                    filePath = getTempPath(path.basename(_path))
+                    writeFile(filePath, replaceContent(getAsset("wrapper.js"), [getFileContents(_path)]))
+                }
+                esbuildEntryPoints.push(filePath)
+            }
+        }
     }
 
     // filter cross-source dependencies
-    if (settings.ui.requires?.length) {
-        for (let plugin of settings.ui.requires) {
+    if (Shared.settings.ui.requires?.length) {
+        for (let plugin of Shared.settings.ui.requires) {
             if (plugin.source) {
                 Shared.crossSourceDependencies.push(plugin)
             } else {
@@ -63,20 +72,16 @@ export default async function buildPlugin({ mainJsPath, mainCssPath, outDir, wat
         }
     }
 
-    esbuildOptions = {
+    const esbuildOptions = {
         entryPoints: esbuildEntryPoints,
-        outdir: outDir,
-        minify: minify,
+        outdir: Shared.pluginOutDir,
+        minify: Shared.args.minify,
         write: false,
-        ...esbuildOptions,
+        ...Shared.esbuildOptions,
     }
 
     async function afterBundle(result: esbuild.BuildResult) {
         // get organized object of compiled js and css
-        interface CompiledCode {
-            js?: string[]
-            css?: string[]
-        }
         const compiledCode = result.outputFiles?.reduce((acc: CompiledCode, item: esbuild.OutputFile) => {
             const extension = path.extname(item.path)
 
@@ -92,17 +97,19 @@ export default async function buildPlugin({ mainJsPath, mainCssPath, outDir, wat
         }, {})
 
         // write all js contents
-        if (isProcessJS && compiledCode?.js?.length) {
-            compiledCode.js.forEach((compiledJs: string, index: number) => {
-                compiledJs = minify ? compiledJs.trim() : compiledJs
-                writeFile(compiledJsPath, compiledJs, index === 0 ? false : true)
+        if (compiledCode?.js?.length) {
+            let FinalCompiledJs = ""
+            compiledCode.js.forEach((compiledJs: string) => {
+                compiledJs = Shared.args.minify ? compiledJs.trim() : compiledJs
+                FinalCompiledJs += compiledJs + "\n"
             })
+            writeFile(compiledJsPath, replaceContent(getAsset("wrapper.js"), [FinalCompiledJs.trim()]))
         }
 
         // write all css contents
         if (compiledCode?.css?.length) {
             compiledCode.css.forEach((compiledCss: string, index: number) => {
-                compiledCss = minify ? compiledCss.trim() : compiledCss
+                compiledCss = Shared.args.minify ? compiledCss.trim() : compiledCss
                 writeFile(compiledCssPath, compiledCss, index === 0 ? false : true)
             })
         }
@@ -111,10 +118,10 @@ export default async function buildPlugin({ mainJsPath, mainCssPath, outDir, wat
         buildPluginYml(compiledCode?.js?.length, compiledCode?.css?.length)
         buildExternalFiles()
 
-        console.log(chalk.green(`${settings.name} built ✅`))
+        console.log(chalk.green(`${Shared.settings.name} built ✅`))
 
         // tells stash-plugin-builder's reload client to reload the stash website
-        if (watch && webSocketData.socket?.send) {
+        if (Shared.args.watch && webSocketData.socket?.send) {
             webSocketData.socket.send("reload")
         } else if (webSocketData.connected) {
             console.log(chalk.red("reload-server: connection lost to stash website! ❌"))
@@ -124,7 +131,7 @@ export default async function buildPlugin({ mainJsPath, mainCssPath, outDir, wat
     }
 
     // initialize reload server
-    if (watch && settings.stashPluginDir) {
+    if (Shared.args.watch && Shared.settings.stashPluginDir) {
         esbuildOptions.plugins?.push({
             name: "on-end",
             setup(build: esbuild.PluginBuild) {
@@ -135,13 +142,12 @@ export default async function buildPlugin({ mainJsPath, mainCssPath, outDir, wat
         })
 
         async function esbuildWatch() {
-            // @ts-ignore
             const ctx = await esbuild.context(esbuildOptions)
             await ctx.watch()
         }
 
         console.log(chalk.blue("Watching..."))
-        initReloadServer(settings.stashPluginDir)
+        initReloadServer(Shared.settings.stashPluginDir)
         esbuildWatch()
     } else {
         const result = await esbuild.build(esbuildOptions)
