@@ -1,9 +1,8 @@
 {
     "name": "stash-plugin-builder",
-    "version": "0.0.4-alpha",
+    "version": "0.0.5-alpha",
     "description": "Build stash plugins with React, SCSS and other libraries with TS support",
     "license": "MIT",
-    "type": "module",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/Tetrax-10/stash-plugin-builder.git"
@@ -16,6 +15,11 @@
         "plugin-builder",
         "builder"
     ],
+    "scripts": {
+        "build": "esbuild src/index.ts --bundle --platform=node --format=esm --external:../../node_modules/* --outdir=dist --minify",
+        "watch": "npm run build -- --watch"
+    },
+    "type": "module",
     "bin": {
         "stash-plugin-builder": "dist/index.js"
     },
@@ -23,10 +27,6 @@
         "dist/**/*",
         "assets/**/*"
     ],
-    "scripts": {
-        "build": "esbuild src/index.ts --bundle --platform=node --format=esm --external:../../node_modules/* --outdir=dist --minify",
-        "watch": "npm run build -- --watch"
-    },
     "dependencies": {
         "@baurine/esbuild-plugin-postcss3": "^0.3.3",
         "@fal-works/esbuild-plugin-global-externals": "^2.1.2",
