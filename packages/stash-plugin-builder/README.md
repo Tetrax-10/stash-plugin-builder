@@ -2,6 +2,10 @@
 
 Build [Stash](https://stashapp.cc/) plugins using React, SCSS, and other libraries with TypeScript support.
 
+[![stash-plugin-builder](https://nodei.co/npm/stash-plugin-builder.png)](https://www.npmjs.com/package/stash-plugin-builder)
+
+</br>
+
 ## Benefits of using stash-plugin-builder:
 
 1. Supports **React, JSX, TypeScript, SCSS, SASS** and **CSS modules** out of the box
@@ -14,9 +18,7 @@ Build [Stash](https://stashapp.cc/) plugins using React, SCSS, and other librari
 
 ## Usage
 
-You can also use **yarn**
-
-### 1. Generate boilerplate using [create-stash-plugin](https://github.com/Tetrax-10/create-stash-plugin)
+### 1. Generate boilerplate using [create-stash-plugin](https://www.npmjs.com/package/create-stash-plugin)
 
 **npm**
 
@@ -37,7 +39,7 @@ yarn create stash-plugin
 `cd` to the generated plugin folder and run
 
 ```sh
-npm run build
+npm/yarn run build
 ```
 
 _The plugin will be built in your `stash plugins folder`. Reload `stash`, and the plugin should be listed in the `Plugins tab`. If not, try clicking `Reload plugins` button and reload again._
@@ -49,7 +51,7 @@ _The plugin will be built in your `stash plugins folder`. Reload `stash`, and th
 Run this npm command and reload `stash` just once to connect `stash-plugin-builder` and `stash`
 
 ```sh
-npm run watch
+npm/yarn run watch
 ```
 
 _Just saving the source code file will auto build and reload stash._
@@ -59,7 +61,7 @@ _Just saving the source code file will auto build and reload stash._
 ### 4. Build plugin for distribution
 
 ```sh
-npm run build-dist
+npm/yarn run build-dist
 ```
 
 _This will build the plugin and output the distributable plugin to the `dist` folder. You can change this folder in `package.json`._
@@ -68,7 +70,7 @@ _This will build the plugin and output the distributable plugin to the `dist` fo
 
 ## settings.yml structure
 
-The `npx create-stash-plugin` command should generate a basic `settings.yml`. However, if you wish to configure advanced settings, please adhere to this structure. The `settings.yml` follows the same format as the [official plugin yml](https://docs.stashapp.cc/in-app-manual/plugins/#plugin-configuration-file-format) format, except few changes. See the example below:
+The `npx create-stash-plugin` command should generate a basic `settings.yml`. However, if you wish to configure advanced settings, please adhere to this structure. The `settings.yml` follows the same structure as the [stash plugin.yml](https://docs.stashapp.cc/in-app-manual/plugins/#plugin-configuration-file-format) but with extra configuration. See the example below:
 
 ```yml
 id: MyPlugin
@@ -87,6 +89,7 @@ ui:
         - id: MyReactComponentsLibrary # local plugin id
         - id: StashUserscriptLibrary # cross-source plugin id
           source: https://stashapp.github.io/CommunityScripts/stable/index.yml # cross-source plugin source url
+    # the following assets and csp are just default plugin.yml structure
     assets: # optional list of assets
         urlPrefix: fsLocation
     csp: # content-security policy overrides
@@ -96,10 +99,11 @@ ui:
             - http://alloweddomain.com
         connect-src:
             - http://alloweddomain.com
-include:
+include: # include external files
     - ./assets # all contents inside assets folder will be copied to the output folder
     - ./python/foo.py # foo.py will be copied to the output folder
     - ./settings/external/config.json # config.json will be copied to the output folder
+# the following are just default plugin.yml structure
 # the following are used for plugin tasks only
 exec:
     - python
@@ -113,9 +117,11 @@ tasks:
           - <arg to add to the exec line>
 ```
 
+</br>
+
 ## Cross-source dependency installer
 
-You can simply specify the **dependency plugin's id and source**, the `stash-plugin-builder` will bundle a cross-source dependency installer script with your plugin. Therefore, when users install your plugin, the dependencies will be automatically installed.
+You can simply specify the **dependency plugin's id and source**, the `stash-plugin-builder` will automatically bundle a cross-source dependency installer script with your plugin. Therefore, when users install your plugin, the cross-source dependencies will be installed automatically.
 
 ```yml
 ui:
@@ -170,6 +176,8 @@ ui:
     <td align="left">main CSS file path from settings.yml</td>
   </tr>
 </table>
+
+</br>
 
 ## Credits
 
