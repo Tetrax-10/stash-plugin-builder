@@ -1,13 +1,13 @@
 # stash-plugin-builder
 
-Build `stash` plugins using React, SCSS, and other libraries with TypeScript support.
+Build [Stash](https://stashapp.cc/) plugins using React, SCSS, and other libraries with TypeScript support.
 
 ## Benefits of using stash-plugin-builder:
 
 1. Supports **React, JSX, TypeScript, SCSS, SASS** and **CSS modules** out of the box
 2. Live reloading
 3. Install npm packages and ship it with your plugins
-4. Cross-source dependency installer
+4. [Cross-source dependency installer](#cross-source-dependency-installer)
 5. and more...
 
 </br>
@@ -107,6 +107,21 @@ tasks:
       description: <optional description>
       execArgs:
           - <arg to add to the exec line>
+```
+
+## Cross-source dependency installer
+
+You can simply specify the **dependency plugin's id and source**, the `stash-plugin-builder` will bundle a cross-source dependency installer script with your plugin. Therefore, when users install your plugin, the dependencies will be automatically installed.
+
+```yml
+ui:
+    requires:
+        - id: MyUtilsLibrary # local plugin id
+        - id: MyReactComponentsLibrary # local plugin id
+        - id: StashUserscriptLibrary # cross-source plugin id
+          source: https://stashapp.github.io/CommunityScripts/stable/index.yml # cross-source plugin source url
+        - id: TetraxUserscriptLibrary # cross-source plugin id
+          source: https://tetrax-10.github.io/stash-stuffs/index.yml # cross-source plugin source url
 ```
 
 </br>
