@@ -14,4 +14,6 @@ npx create-stash-plugin
 yarn create stash-plugin
 ```
 
-[Click here](https://github.com/Tetrax-10/stash-plugin-builder#readme) to see the `stash-plugin-builder` documentation 📃
+</br>
+
+[Click here to see the `stash-plugin-builder` documentation 📃](https://www.npmjs.com/package/stash-plugin-builder#stash-plugin-builder)

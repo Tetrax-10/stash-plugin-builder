@@ -1,16 +1,14 @@
 # stash-plugin-builder
 
-Build `stash` plugins with React, SCSS and other libraries with TS support.
+Build `stash` plugins using React, SCSS, and other libraries with TypeScript support.
 
-## Benefits using stash-plugin-builder:
+## Benefits of using stash-plugin-builder:
 
-1. Support for **React, JSX, TypeScript, SCSS, SASS, CSS modules** out of the box
-2. Live reload
+1. Supports **React, JSX, TypeScript, SCSS, SASS** and **CSS modules** out of the box
+2. Live reloading
 3. Install npm packages and ship it with your plugins
-4. Built-in cross-source dependency installer
-5. Build Stash Themes
-6. and more...
- <!-- Deploy plugins to github with python based deployer -->
+4. Cross-source dependency installer
+5. and more...
 
 </br>
 
