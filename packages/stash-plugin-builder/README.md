@@ -73,11 +73,11 @@ _This will build the plugin and output the distributable plugin to the `dist` fo
 The `npx create-stash-plugin` command should generate a basic `settings.yml`. However, if you wish to configure advanced settings, please adhere to this structure. The `settings.yml` follows the same structure as the [stash plugin.yml](https://docs.stashapp.cc/in-app-manual/plugins/#plugin-configuration-file-format) but with extra configuration. See the example below:
 
 ```yml
-id: MyPlugin
+id: MyPlugin # should be upper camel case
 name: My Plugin
 description: My plugin does awesome things
 version: "1.0" # should be a string
-stashPluginSubDir: my-plugins-dev
+stashPluginSubDir: my-plugins-dev # optional sub-dir inside your stash plugins folder
 ui:
     javascript: ./src/index.js # main js file
     css: ./styles/main.css # main css file
