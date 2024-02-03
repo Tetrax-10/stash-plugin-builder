@@ -1,14 +1,18 @@
 import chalk from "chalk"
 import path from "path"
-import "dotenv/config"
+import { configDotenv } from "dotenv"
 
 import Shared from "./shared/shared"
 import { isUpperCamelCase } from "./utils/utils"
-import { createFolder, unixPath, getYml } from "./utils/glob"
+import { createFolder, unixPath, getYml, getDirname } from "./utils/glob"
 import getEsbuildOptions from "./helpers/esbuidConfig"
 import buildPlugin from "./builder/plugin"
 
 import { Settings } from "./interfaces/interface"
+
+configDotenv({
+    path: path.resolve(getDirname(), "../../../.env"),
+})
 
 export default async function build() {
     const settingsYml = getYml("./settings.yml", true)

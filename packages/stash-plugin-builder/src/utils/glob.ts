@@ -7,11 +7,6 @@ import { fileURLToPath } from "url"
 
 import Shared from "../shared/shared"
 
-/* eslint-disable no-underscore-dangle */
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-/* eslint-enable no-underscore-dangle */
-
 export function unixPath(str: string): string {
     if (str) {
         return str.replaceAll("\\", "/")
@@ -59,8 +54,15 @@ export function deleteFile(filePath: string): boolean {
     }
 }
 
+export function getDirname(): string {
+    const __filename = fileURLToPath(import.meta.url)
+    const __dirname = path.dirname(__filename)
+
+    return __dirname
+}
+
 export function getAsset(filePath: string, needPath?: boolean): string {
-    const assetPath = path.join(__dirname, "../assets", filePath)
+    const assetPath = path.join(getDirname(), "../assets", filePath)
     if (needPath) {
         return assetPath
     }

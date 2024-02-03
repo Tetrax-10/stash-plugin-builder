@@ -16,7 +16,7 @@
         "no-alert": "error",
         "no-undef": "error",
         "object-shorthand": ["warn", "never"],
-        "no-underscore-dangle": ["warn", { "allow": ["_path"] }],
+        "no-underscore-dangle": ["warn", { "allow": ["_path", "__filename", "__dirname"] }],
         "camelcase": ["warn"],
         "no-eval": "error",
         "import/no-useless-path-segments": ["error", { "noUselessIndex": true }],
