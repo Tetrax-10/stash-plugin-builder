@@ -3,6 +3,7 @@ import { getBuildPath, writeFile, writeYml } from "../utils/glob"
 
 export default function buildPluginYml(isProcessJS: number | undefined, isProcessCss: number | undefined) {
     // need to do the typescript part
+    // eslint-disable-next-line
     const pluginYml: any = structuredClone(Shared.settings)
 
     delete pluginYml.id

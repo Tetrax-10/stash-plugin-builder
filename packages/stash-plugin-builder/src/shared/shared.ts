@@ -1,6 +1,6 @@
 import { SharedInterface } from "../interfaces/interface"
 
-// @ts-ignore
+// @ts-expect-error skip
 const Shared: SharedInterface = {
     dependencies: [],
     crossSourceDependencies: [],

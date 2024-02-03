@@ -1,6 +1,6 @@
 import path from "path"
 import chalk from "chalk"
-import { WebSocketServer } from "ws"
+import { WebSocketServer, WebSocket } from "ws"
 
 import { writeFile, getAsset, writeYml, createFolder } from "../utils/glob"
 
@@ -8,7 +8,7 @@ interface WebSocketData {
     connected: boolean
     socket:
         | {
-              send: Function
+              send: WebSocket["send"]
           }
         | undefined
 }
@@ -43,7 +43,7 @@ export function initReloadServer(stashPluginDir: string) {
 
     installReloadClient(stashPluginDir)
 
-    server.on("connection", (soc: any) => {
+    server.on("connection", (soc) => {
         webSocketData.socket = soc
 
         if (!webSocketData.connected) console.log(chalk.green("reload-server: connected to stash website"))

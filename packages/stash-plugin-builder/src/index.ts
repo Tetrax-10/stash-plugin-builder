@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-// @ts-ignore
 import parseArgs from "minimist"
 
 import Shared from "./shared/shared"

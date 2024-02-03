@@ -5,8 +5,10 @@ import { fileURLToPath } from "url"
 
 import Shared from "../shared/shared"
 
+/* eslint-disable no-underscore-dangle */
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+/* eslint-enable no-underscore-dangle */
 
 export function unixPath(str: string): string {
     if (str) {
@@ -35,8 +37,8 @@ export function writeFile(filePath: string, content: string, append?: boolean) {
 export function fsExsists(paths: string[] | string): string[] | boolean {
     if (typeof paths === "object") {
         const availablePaths = []
-        for (let path of paths) {
-            if (fs.existsSync(path)) availablePaths.push(path)
+        for (const _path of paths) {
+            if (fs.existsSync(_path)) availablePaths.push(_path)
         }
         return availablePaths
     }

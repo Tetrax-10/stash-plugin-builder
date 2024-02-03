@@ -1,0 +1,3 @@
+{
+    "eslint.workingDirectories": ["packages/create-stash-plugin", "packages/stash-plugin-builder"]
+}

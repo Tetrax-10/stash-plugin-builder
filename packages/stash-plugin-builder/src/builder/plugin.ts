@@ -41,7 +41,7 @@ export default async function buildPlugin() {
     if (typeof Shared.settings.ui.include === "object" && Shared.settings.ui.include?.length) {
         const availableIncludes = fsExsists(Shared.settings.ui.include)
         if (typeof availableIncludes === "object" && availableIncludes.length) {
-            for (let _path of availableIncludes) {
+            for (const _path of availableIncludes) {
                 let filePath = _path
                 if (isJs(_path)) {
                     filePath = getTempPath(path.basename(_path))
@@ -54,7 +54,7 @@ export default async function buildPlugin() {
 
     // filter cross-source dependencies
     if (Shared.settings.ui.requires?.length) {
-        for (let plugin of Shared.settings.ui.requires) {
+        for (const plugin of Shared.settings.ui.requires) {
             if (plugin.source) {
                 Shared.crossSourceDependencies.push(plugin)
             } else {
@@ -134,7 +134,7 @@ export default async function buildPlugin() {
     if (Shared.args.watch && Shared.settings.stashPluginDir) {
         esbuildOptions.plugins?.push({
             name: "on-end",
-            setup(build: esbuild.PluginBuild) {
+            setup: (build: esbuild.PluginBuild) => {
                 build.onEnd(async (result: esbuild.BuildResult) => {
                     await afterBundle(result)
                 })

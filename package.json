@@ -6,9 +6,15 @@
         "packages/*"
     ],
     "scripts": {
-        "format": "prettier --write ."
+        "format": "prettier --write .",
+        "lint": "eslint packages"
     },
     "devDependencies": {
+        "@types/minimist": "^1.2.5",
+        "@typescript-eslint/eslint-plugin": "^6.20.0",
+        "@typescript-eslint/parser": "^6.20.0",
+        "eslint": "^8.56.0",
+        "eslint-plugin-import": "^2.29.1",
         "prettier": "^3.2.4"
     }
 }

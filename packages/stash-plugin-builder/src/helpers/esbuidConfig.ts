@@ -1,6 +1,6 @@
 import * as esbuild from "esbuild"
 import autoprefixer from "autoprefixer"
-// @ts-ignore
+// @ts-expect-error skip
 import postCssPlugin from "@baurine/esbuild-plugin-postcss3"
 import { globalExternals } from "@fal-works/esbuild-plugin-global-externals"
 
@@ -23,6 +23,7 @@ export default function getEsbuildOptions(): esbuild.BuildOptions {
         format: "esm",
         external: Object.keys(externalPackages),
         bundle: true,
+        tsconfig: "tsconfig.json", // i don't think this works but esbuild docs say it should
         plugins: [
             postCssPlugin.default({
                 plugins: [autoprefixer],
