@@ -66,5 +66,5 @@
 
     setTimeout(() => {
         if (pluginInstalled) window.location.reload()
-    }, 5000)
+    }, 1000)
 })()
