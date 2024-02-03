@@ -36,9 +36,10 @@ export function generateTSConfig() {
         JSON.stringify(
             {
                 compilerOptions: {
-                    target: "ES2021",
+                    target: "ES2022",
                     jsx: "react",
-                    module: "commonjs",
+                    module: "ES2022",
+                    moduleResolution: "Bundler",
                     resolveJsonModule: true,
                     outDir: "dist",
                     esModuleInterop: true,
@@ -85,7 +86,7 @@ export function generateIndexJs() {
         writeFile(getProjectPath(`src/components/Button/Button.${Shared.jsExt}`), getAsset("components/Button/Button.jsx").replace("css", Shared.cssExt))
 
         if (Shared.cssExt === "sass") {
-            writeFile(getProjectPath(`src/components/Button/Button.sass`), ".demo-button\n  background-color: red")
+            writeFile(getProjectPath("src/components/Button/Button.sass"), ".demo-button\n  background-color: red")
         } else {
             copy(getAsset("components/Button/Button.css", true), getProjectPath(`src/components/Button/Button.${Shared.cssExt}`))
         }
