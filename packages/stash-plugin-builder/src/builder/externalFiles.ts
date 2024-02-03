@@ -1,16 +1,15 @@
-import path from "path"
-
 import Shared from "../shared/shared"
-import { copy, fsExsists, getBuildPath, isPathType } from "../utils/glob"
+import { copy, fsExsists, getBuildPath } from "../utils/glob"
 
 export function buildExternalFiles() {
     Shared.settings.include?.forEach((_path) => {
-        if (fsExsists(_path)) {
-            if (isPathType(_path, "dir")) {
-                copy(_path, getBuildPath())
-            } else {
-                copy(_path, getBuildPath(path.basename(_path)))
-            }
+        let isCopyContents = false
+
+        if (_path.endsWith("/*")) {
+            _path = _path.slice(0, -2)
+            isCopyContents = true
         }
+
+        if (fsExsists(_path)) copy(_path, getBuildPath(), isCopyContents)
     })
 }

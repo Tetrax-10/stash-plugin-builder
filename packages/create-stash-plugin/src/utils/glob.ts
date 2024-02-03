@@ -59,8 +59,9 @@ export function getAsset(filePath: string, needPath?: boolean): string {
     return getFileContents(assetPath)
 }
 
-export function copy(src: string, des: string) {
-    fs.cpSync(src, des, { recursive: true })
+export function copy(src: string, dest: string, contents = false) {
+    if (!contents) dest = path.join(dest, path.basename(src))
+    fs.cpSync(src, dest, { recursive: true })
 }
 
 export function getProjectPath(_path = ""): string {

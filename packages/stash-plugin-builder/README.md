@@ -89,7 +89,7 @@ ui:
         - id: MyReactComponentsLibrary # local plugin id
         - id: StashUserscriptLibrary # cross-source plugin id
           source: https://stashapp.github.io/CommunityScripts/stable/index.yml # cross-source plugin source url
-    # the following assets and csp are just default plugin.yml structure
+    # the following assets and csp structure are just default plugin.yml structure
     assets: # optional list of assets
         urlPrefix: fsLocation
     csp: # content-security policy overrides
@@ -100,11 +100,10 @@ ui:
         connect-src:
             - http://alloweddomain.com
 include: # include external files
-    - ./assets # all contents inside assets folder will be copied to the output folder
-    - ./python/foo.py # foo.py will be copied to the output folder
-    - ./settings/external/config.json # config.json will be copied to the output folder
-# the following are just default plugin.yml structure
-# the following are used for plugin tasks only
+    - ./assets # assets folder will be copied to the output folder
+    - ./python/foo.py # foo.py will be copi...
+    - ./configs/* # all contents inside the configs folder will be copi...
+# the following are just default plugin.yml structure and they are used for plugin tasks only
 exec:
     - python
     - "{pluginDir}/foo.py" # values with variable should be wrapped with double quotes

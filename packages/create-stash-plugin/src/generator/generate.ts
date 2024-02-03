@@ -6,7 +6,7 @@ import { replaceContent } from "../utils/utils"
 import { Settings } from "../interface/interface"
 
 export function generateGitIgnore() {
-    copy(getAsset("gitignore.txt", true), getProjectPath(".gitignore"))
+    copy(getAsset("gitignore.txt", true), getProjectPath(".gitignore"), true)
 }
 
 export function generatePackageJson() {
@@ -88,7 +88,7 @@ export function generateIndexJs() {
         if (Shared.cssExt === "sass") {
             writeFile(getProjectPath("src/components/Button/Button.sass"), ".demo-button\n  background-color: red")
         } else {
-            copy(getAsset("components/Button/Button.css", true), getProjectPath(`src/components/Button/Button.${Shared.cssExt}`))
+            copy(getAsset("components/Button/Button.css", true), getProjectPath(`src/components/Button/Button.${Shared.cssExt}`), true)
         }
 
         Shared.devDependencies.push("@types/react")

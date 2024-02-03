@@ -92,10 +92,12 @@ export function getBuildPath(_path = ""): string {
     return path.join(Shared.pluginOutDir, _path)
 }
 
-export function copy(src: string, des: string) {
-    fs.cpSync(src, des, { recursive: true })
+export function copy(src: string, dest: string, contents = false) {
+    if (!contents) dest = path.join(dest, path.basename(src))
+    fs.cpSync(src, dest, { recursive: true })
 }
 
+// unused
 export function isPathType(_path: string, type: "file" | "dir"): boolean {
     if (!fsExsists(_path)) return false
 
