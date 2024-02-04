@@ -1,6 +1,6 @@
 {
     "name": "stash-plugin-builder",
-    "version": "0.0.9-alpha",
+    "version": "0.0.10-alpha",
     "description": "Build stash plugins with React, SCSS and other libraries with TS support",
     "license": "MIT",
     "repository": {
