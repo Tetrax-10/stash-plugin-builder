@@ -17,8 +17,16 @@ export default function buildPluginYml(isProcessJS: number | undefined, isProces
         delete pluginYml.ui?.requires
     }
 
-    if (isProcessJS) pluginYml.ui.javascript = [`${Shared.settings.id}.js`]
-    if (isProcessCss) pluginYml.ui.css = [`${Shared.settings.id}.css`]
+    if (isProcessJS) {
+        pluginYml.ui.javascript = [`${Shared.settings.id}.js`]
+    } else {
+        delete pluginYml.ui.javascript
+    }
+    if (isProcessCss) {
+        pluginYml.ui.css = [`${Shared.settings.id}.css`]
+    } else {
+        delete pluginYml.ui.css
+    }
 
     writeYml(getBuildPath(`${Shared.settings.id}.yml`), pluginYml)
 
