@@ -61,6 +61,10 @@ export function getDirname(): string {
     return __dirname
 }
 
+export function getRootPath(_path = ""): string {
+    return path.join(path.resolve(getDirname(), "../../../"), _path)
+}
+
 export function getAsset(filePath: string, needPath?: boolean): string {
     const assetPath = path.join(getDirname(), "../assets", filePath)
     if (needPath) {
@@ -86,6 +90,10 @@ export function writeYml(filePath: string, content: string | object) {
 
 export function getTempPath(_path = ""): string {
     return path.join(os.tmpdir(), "stash-plugin-builder", _path)
+}
+
+export function getPluginPath(_path = ""): string {
+    return path.join(Shared.pluginInDir, _path)
 }
 
 export function getBuildPath(_path = ""): string {

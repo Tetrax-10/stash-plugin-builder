@@ -3,26 +3,20 @@ import path from "path"
 import { configDotenv } from "dotenv"
 
 import Shared from "./shared/shared"
-import { isUpperCamelCase } from "./utils/utils"
-import { createFolder, unixPath, getYml, getDirname } from "./utils/glob"
-import getEsbuildOptions from "./helpers/esbuidConfig"
 import buildPlugin from "./builder/plugin"
-
-import { Settings } from "./interfaces/interface"
+import getSettingsYml from "./helpers/settingsYml"
+import getEsbuildOptions from "./helpers/esbuidConfig"
+import { isUpperCamelCase } from "./utils/utils"
+import { createFolder, unixPath, getRootPath } from "./utils/glob"
 
 configDotenv({
-    path: path.resolve(getDirname(), "../../../.env"),
+    path: getRootPath(".env"),
 })
 
 export default async function build() {
-    const settingsYml = getYml("./settings.yml", true)
+    Shared.pluginInDir = Shared.args?.inDir ?? ""
 
-    if (settingsYml === null) {
-        console.log(chalk.red("settings.yml: missing settings.yml"))
-        process.exit()
-    } else {
-        Shared.settings = settingsYml as Settings
-    }
+    Shared.settings = getSettingsYml()
 
     Shared.settings.stashPluginDir = process.env.STASH_PLUGIN_DIR
 

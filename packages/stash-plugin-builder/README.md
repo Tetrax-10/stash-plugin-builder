@@ -157,6 +157,12 @@ ui:
     <td align="left">present or not</td>
   </tr>
   <tr align="center">
+    <td>-i</td>
+    <td>--in</td>
+    <td align="left">your plugin folder</td>
+    <td align="left">CWD</td>
+  </tr>
+  <tr align="center">
     <td>-o</td>
     <td>--out</td>
     <td align="left">output folder</td>

@@ -14,6 +14,7 @@ function getArgv(key: string, shortKey?: string) {
 Shared.args = {
     minify: getArgv("minify"),
     watch: getArgv("watch"),
+    inDir: getArgv("in"),
     outDir: getArgv("out"),
     mainJsPath: getArgv("js"),
     mainCssPath: getArgv("css"),

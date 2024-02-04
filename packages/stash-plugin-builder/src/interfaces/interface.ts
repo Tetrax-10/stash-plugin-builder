@@ -23,6 +23,7 @@ export interface Settings {
 export interface parsedArgs {
     minify: boolean
     watch: boolean
+    inDir: string
     outDir: string
     mainJsPath: string
     mainCssPath: string
@@ -31,6 +32,7 @@ export interface parsedArgs {
 export interface SharedInterface {
     args: parsedArgs
     settings: Settings
+    pluginInDir: string
     pluginOutDir: string
     esbuildOptions: esbuild.BuildOptions
     dependencies: string[]
