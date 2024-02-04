@@ -12,8 +12,8 @@ export default function getSettingsYml(): Settings {
         process.exit()
     }
 
-    settingsYml.ui.javascript = unixPath(getPluginPath(settingsYml.ui.javascript))
-    settingsYml.ui.css = unixPath(getPluginPath(settingsYml.ui.css))
+    settingsYml.ui.javascript = settingsYml.ui.javascript ? unixPath(getPluginPath(settingsYml.ui.javascript)) : ""
+    settingsYml.ui.css = settingsYml.ui.css ? unixPath(getPluginPath(settingsYml.ui.css)) : ""
 
     if (settingsYml.ui.include?.length) {
         settingsYml.ui.include.forEach((filePath, index, array) => {
