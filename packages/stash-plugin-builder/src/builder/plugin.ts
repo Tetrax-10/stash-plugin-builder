@@ -20,10 +20,10 @@ export default async function buildPlugin() {
 
     const esbuildEntryPoints: string[] = []
 
-    const mainJsAbsolutePath = Shared.args.mainJsPath ? unixPath(path.resolve(Shared.args.mainJsPath)) : ""
+    const mainJsAbsolutePath = Shared.settings.ui.javascript ? unixPath(path.resolve(Shared.settings.ui.javascript)) : ""
 
     const isProcessJS = mainJsAbsolutePath && fsExsists(mainJsAbsolutePath)
-    const isProcessCss = Shared.args.mainCssPath && fsExsists(Shared.args.mainCssPath)
+    const isProcessCss = Shared.settings.ui.css && fsExsists(Shared.settings.ui.css)
 
     deleteFile(tempPath)
     createFolder(tempPath)
@@ -35,7 +35,8 @@ export default async function buildPlugin() {
     }
 
     // add main css to esbuild entry points
-    if (isProcessCss) esbuildEntryPoints.push(Shared.args.mainCssPath)
+    // @ts-expect-error skip
+    if (isProcessCss) esbuildEntryPoints.push(Shared.settings.ui.css)
 
     // add ui include files to esbuild entry point
     if (typeof Shared.settings.ui.include === "object" && Shared.settings.ui.include?.length) {

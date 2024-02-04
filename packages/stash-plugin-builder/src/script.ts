@@ -20,8 +20,8 @@ export default async function build() {
 
     Shared.settings.stashPluginDir = process.env.STASH_PLUGIN_DIR
 
-    Shared.args.mainJsPath = unixPath(Shared.args.mainJsPath ?? Shared.settings.ui.javascript ?? "")
-    Shared.args.mainCssPath = unixPath(Shared.args.mainCssPath ?? Shared.settings.ui.css ?? "")
+    Shared.settings.ui.javascript = unixPath(Shared.args.mainJsPath ?? Shared.settings.ui.javascript ?? "")
+    Shared.settings.ui.css = unixPath(Shared.args.mainCssPath ?? Shared.settings.ui.css ?? "")
 
     if (!isUpperCamelCase(Shared.settings.id)) {
         console.log(chalk.red("settings.yml: 'id' value should be upper camel case. eg: 'MyStashPlugin'"))
