@@ -10,10 +10,11 @@ export interface Settings {
         css?: string
         include?: string[]
         requires?: [
-            {
-                id: string
-                source?: string
-            },
+            | {
+                  id: string
+                  source?: string
+              }
+            | string,
         ]
     }
     include?: string[]

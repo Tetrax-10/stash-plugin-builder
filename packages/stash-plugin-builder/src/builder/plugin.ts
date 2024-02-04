@@ -7,7 +7,7 @@ import buildPluginYml from "./yml"
 import { isJs, replaceContent } from "../utils/utils"
 import { buildExternalFiles } from "./externalFiles"
 import { initReloadServer, webSocketData } from "../helpers/reloadServer"
-import { createFolder, fsExsists, writeFile, deleteFile, getAsset, unixPath, getBuildPath, getTempPath, getFileContents } from "../utils/glob"
+import { createFolder, fsExsists, writeFile, fsDelete, getAsset, unixPath, getBuildPath, getTempPath, getFileContents } from "../utils/glob"
 
 import { CompiledCode } from "../interfaces/interface"
 
@@ -25,7 +25,7 @@ export default async function buildPlugin() {
     const isProcessJS = mainJsAbsolutePath && fsExsists(mainJsAbsolutePath)
     const isProcessCss = Shared.settings.ui.css && fsExsists(Shared.settings.ui.css)
 
-    deleteFile(tempPath)
+    fsDelete(tempPath)
     createFolder(tempPath)
 
     // add main js to esbuild entry points
@@ -56,10 +56,12 @@ export default async function buildPlugin() {
     // filter cross-source dependencies
     if (Shared.settings.ui.requires?.length) {
         for (const plugin of Shared.settings.ui.requires) {
-            if (plugin.source) {
+            if (typeof plugin === "object" && plugin.source) {
                 Shared.crossSourceDependencies.push(plugin)
+            } else if (typeof plugin === "string") {
+                Shared.dependencies.push(plugin)
             } else {
-                Shared.dependencies.push(plugin.id)
+                console.log(chalk.red("dependency installer: invalid dependency structure"))
             }
         }
 

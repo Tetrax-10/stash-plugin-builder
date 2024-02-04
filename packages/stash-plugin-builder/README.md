@@ -76,6 +76,7 @@ The `npx create-stash-plugin` command should generate a basic `settings.yml`. Ho
 id: MyPlugin # should be upper camel case
 name: My Plugin
 description: My plugin does awesome things
+url: https://github.com/Tetrax-10/stash-stuffs
 version: "1.0" # should be a string
 stashPluginSubDir: my-plugins-dev # optional sub-dir inside your stash plugins folder
 ui:
@@ -85,8 +86,8 @@ ui:
         - ./lib/colors.js
         - ./scripts/injectRemoteCode.js
     requires:
-        - id: MyUtilsLibrary # local plugin id
-        - id: MyReactComponentsLibrary # local plugin id
+        - MyUtilsLibrary # local plugin id
+        - MyReactComponentsLibrary # local plugin id
         - id: StashUserscriptLibrary # cross-source plugin id
           source: https://stashapp.github.io/CommunityScripts/stable/index.yml # cross-source plugin source url
     # the following assets and csp structure are just default plugin.yml structure
@@ -125,8 +126,8 @@ You can simply specify the **dependency plugin's id and source**, the `stash-plu
 ```yml
 ui:
     requires:
-        - id: MyUtilsLibrary # local plugin id
-        - id: MyReactComponentsLibrary # local plugin id
+        - MyUtilsLibrary # local plugin id
+        - MyReactComponentsLibrary # local plugin id
         - id: StashUserscriptLibrary # cross-source plugin id
           source: https://stashapp.github.io/CommunityScripts/stable/index.yml # cross-source plugin source url
         - id: TetraxUserscriptLibrary # cross-source plugin id

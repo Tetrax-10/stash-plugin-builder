@@ -26,8 +26,8 @@ export default async function build() {
     if (!isUpperCamelCase(Shared.settings.id)) {
         console.log(chalk.red("settings.yml: 'id' value should be upper camel case. eg: 'MyStashPlugin'"))
         process.exit()
-    } else if (typeof Shared.settings.version !== "string") {
-        console.log(chalk.red("settings.yml: 'version' value should be a string. eg: version: \"1.0\""))
+    } else if (!Shared.settings.version) {
+        console.log(chalk.red("settings.yml: version info is missing"))
         process.exit()
     } else if (!(Shared.settings.name && (Shared.settings.ui.javascript || Shared.settings.ui.css))) {
         console.log(chalk.red("settings.yml: some required keys and values are missing"))

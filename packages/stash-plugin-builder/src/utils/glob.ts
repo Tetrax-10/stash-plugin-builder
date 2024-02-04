@@ -45,9 +45,9 @@ export function createFolder(folderPath: string) {
     }
 }
 
-export function deleteFile(filePath: string): boolean {
+export function fsDelete(filePath: string): boolean {
     try {
-        fs.unlinkSync(filePath)
+        fs.rmSync(filePath, { recursive: true, force: true })
         return true
     } catch (err) {
         return false
