@@ -132,7 +132,7 @@ export default async function buildPlugin() {
     }
 
     // initialize reload server
-    if (Shared.args.watch && Shared.settings.stashPluginDir) {
+    if (Shared.args.watch && Shared.stashPluginDir) {
         esbuildOptions.plugins?.push({
             name: "on-end",
             setup: (build: esbuild.PluginBuild) => {
@@ -148,7 +148,7 @@ export default async function buildPlugin() {
         }
 
         console.log(chalk.blue("Watching..."))
-        initReloadServer(Shared.settings.stashPluginDir)
+        initReloadServer()
         esbuildWatch()
     } else {
         const result = await esbuild.build(esbuildOptions)

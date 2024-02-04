@@ -18,7 +18,7 @@ export default async function build() {
 
     Shared.settings = getSettingsYml()
 
-    Shared.settings.stashPluginDir = process.env.STASH_PLUGIN_DIR
+    Shared.stashPluginDir = process.env.STASH_PLUGIN_DIR
 
     Shared.settings.ui.javascript = unixPath(Shared.args.mainJsPath ?? Shared.settings.ui.javascript ?? "")
     Shared.settings.ui.css = unixPath(Shared.args.mainCssPath ?? Shared.settings.ui.css ?? "")
@@ -35,10 +35,10 @@ export default async function build() {
     }
 
     if (!Shared.args.outDir) {
-        if (Shared.settings.stashPluginDir && Shared.settings.stashPluginSubDir) {
-            Shared.args.outDir = path.join(Shared.settings.stashPluginDir, Shared.settings.stashPluginSubDir)
-        } else if (Shared.settings.stashPluginDir) {
-            Shared.args.outDir = Shared.settings.stashPluginDir
+        if (Shared.stashPluginDir && Shared.settings.stashPluginSubDir) {
+            Shared.args.outDir = path.join(Shared.stashPluginDir, Shared.settings.stashPluginSubDir)
+        } else if (Shared.stashPluginDir) {
+            Shared.args.outDir = Shared.stashPluginDir
         } else {
             console.log(chalk.red(".env: 'STASH_PLUGIN_DIR' value is missing"))
             process.exit()

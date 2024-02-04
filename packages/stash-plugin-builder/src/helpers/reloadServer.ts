@@ -2,6 +2,7 @@ import path from "path"
 import chalk from "chalk"
 import { WebSocketServer, WebSocket } from "ws"
 
+import Shared from "../shared/shared"
 import { writeFile, getAsset, writeYml, createFolder } from "../utils/glob"
 
 interface WebSocketData {
@@ -38,10 +39,11 @@ export function installReloadClient(stashPluginDir: string) {
     writeFile(ReloadClientJsPath, getAsset("ReloadClient.js"))
 }
 
-export function initReloadServer(stashPluginDir: string) {
+export function initReloadServer() {
     const server = new WebSocketServer({ port: 8082 })
 
-    installReloadClient(stashPluginDir)
+    // @ts-expect-error skip
+    installReloadClient(Shared.stashPluginDir)
 
     server.on("connection", (soc) => {
         webSocketData.socket = soc

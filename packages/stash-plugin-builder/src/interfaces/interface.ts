@@ -4,7 +4,6 @@ export interface Settings {
     id: string
     name: string
     version: string
-    stashPluginDir?: string
     stashPluginSubDir?: string
     ui: {
         javascript?: string
@@ -34,6 +33,7 @@ export interface SharedInterface {
     settings: Settings
     pluginInDir: string
     pluginOutDir: string
+    stashPluginDir: string | undefined
     esbuildOptions: esbuild.BuildOptions
     dependencies: string[]
     crossSourceDependencies: object[]
