@@ -1,0 +1,40 @@
+name: Build and Publish Plugins and Themes
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build_and_publish:
+    name: Build and Publish Plugins and Themes
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: "0"
+
+      - name: Install node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Install repository dependencies
+        run: npm ci
+
+      - name: Build plugins and themes
+        run: node build.js
+
+      - name: Publish to dist branch
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: dist
+          FOLDER: "dist"
+          MESSAGE: "built for {sha}"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

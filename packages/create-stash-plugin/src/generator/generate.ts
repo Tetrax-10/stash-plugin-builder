@@ -16,6 +16,7 @@ export function generatePackageJson() {
             {
                 name: Shared.ans.id.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase(),
                 version: "1.0",
+                type: "module",
                 scripts: {
                     build: "stash-plugin-builder",
                     "build-dist": "stash-plugin-builder --out=dist --minify",
@@ -135,4 +136,12 @@ export function generateSettings() {
 
 export function generateEnv() {
     writeFile(getProjectPath(".env"), `STASH_PLUGIN_DIR="${Shared.ans.stashPluginDir}"`)
+}
+
+export function generateWorkflow() {
+    copy(getAsset("gh-build-workflow", true), getProjectPath(), true)
+}
+
+export function generateReadme() {
+    copy(getAsset("README.md", true), getProjectPath())
 }
