@@ -69,5 +69,5 @@ export function getProjectPath(_path = ""): string {
 }
 
 export function writeYml(filePath: string, content: string | object) {
-    writeFile(filePath, stringifyYml(content))
+    writeFile(filePath, stringifyYml(content).replace(/(version: )"([^"]+)"/g, "$1$2"))
 }

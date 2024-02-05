@@ -8,11 +8,12 @@ Build [Stash](https://stashapp.cc/) plugins using React, SCSS, and other librari
 
 ## Benefits of using stash-plugin-builder:
 
-1. Supports **React, JSX, TypeScript, SCSS, SASS** and **CSS modules** out of the box
+1. Supports **React JSX, TypeScript, Scss, Sass, Less, Css modules** and **Stylus** out of the box
 2. Live reloading
 3. Install npm packages and ship it with your plugins
 4. [Cross-source dependency installer](#cross-source-dependency-installer)
-5. and more...
+5. Cross browser theme support with [Autoprefixer](https://github.com/postcss/autoprefixer)
+6. Built-in gh workflow to automatically build and publish your plugins for every commit push
 
 </br>
 
@@ -39,7 +40,7 @@ yarn create stash-plugin
 `cd` to the generated plugin folder and run
 
 ```sh
-npm/yarn run build
+npm run build
 ```
 
 _The plugin will be built in your `stash plugins folder`. Reload `stash`, and the plugin should be listed in the `Plugins tab`. If not, try clicking `Reload plugins` button and reload again._
@@ -51,7 +52,7 @@ _The plugin will be built in your `stash plugins folder`. Reload `stash`, and th
 Run this npm command and reload `stash` just once to connect `stash-plugin-builder` and `stash`
 
 ```sh
-npm/yarn run watch
+npm run watch
 ```
 
 _Just saving the source code file will auto build and reload stash._
@@ -61,23 +62,40 @@ _Just saving the source code file will auto build and reload stash._
 ### 4. Build plugin for distribution
 
 ```sh
-npm/yarn run build-dist
+npm run build-dist
 ```
 
 _This will build the plugin and output the distributable plugin to the `dist` folder. You can change this folder in `package.json`._
+
+Note: You don't need this if you have generated the boilerplate with **`npx create-stash-plugin`** as it comes with gh workflow that automatically builds and publishes your plugins on every commit push.
+
+</br>
+
+## build-config.json
+
+`build.js` builds your plugins for deployment based on the configuration specified in `build-config.json`.
+
+```js
+{
+    "plugins": ["plugins/*", "themes/MyTheme"], // use this only if you have monorepo
+    "outDir": "dist", // if you edit this, update the workflow file too
+    "excludePluginFolders": "MyTestPlugin", // plugin's folder name not id
+    "include": ["README.md", "LICENSE", "foler-one", "foler-two/*"] // these files will be copied to dist branch
+}
+```
 
 </br>
 
 ## settings.yml structure
 
-The `npx create-stash-plugin` command should generate a basic `settings.yml`. However, if you wish to configure advanced settings, please adhere to this structure. The `settings.yml` follows the same structure as the [stash plugin.yml](https://docs.stashapp.cc/in-app-manual/plugins/#plugin-configuration-file-format) but with extra configuration. See the example below:
+The **`npx create-stash-plugin`** command should generate a basic `settings.yml`. However, if you wish to configure advanced settings, please adhere to this structure. The `settings.yml` follows the same structure as the [stash plugin.yml](https://docs.stashapp.cc/in-app-manual/plugins/#plugin-configuration-file-format) but with extra configuration. See the example below:
 
 ```yml
 id: MyPlugin # should be upper camel case
 name: My Plugin
 description: My plugin does awesome things
 url: https://github.com/Tetrax-10/stash-stuffs
-version: "1.0" # should be a string
+version: 1.0
 stashPluginSubDir: my-plugins-dev # optional sub-dir inside your stash plugins folder
 ui:
     javascript: ./src/index.js # main js file

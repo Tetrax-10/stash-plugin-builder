@@ -35,6 +35,6 @@ jobs:
         env:
           REPO: self
           BRANCH: dist
-          FOLDER: "dist"
+          FOLDER: "dist" # build-config.json outDir
           MESSAGE: "built for {sha}"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

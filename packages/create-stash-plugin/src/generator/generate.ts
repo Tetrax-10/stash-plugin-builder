@@ -9,6 +9,10 @@ export function generateGitIgnore() {
     copy(getAsset("gitignore.txt", true), getProjectPath(".gitignore"), true)
 }
 
+export function generateGitAttributes() {
+    writeFile(getProjectPath(".gitattributes"), "build.js linguist-vendored")
+}
+
 export function generatePackageJson() {
     writeFile(
         getProjectPath("package.json"),
@@ -54,23 +58,6 @@ export function generateTSConfig() {
             2
         )
     )
-}
-
-export function determineCssExt() {
-    switch (Shared.ans.cssFramework) {
-        case "SCSS":
-            Shared.cssExt = "scss"
-            break
-        case "SASS":
-            Shared.cssExt = "sass"
-            break
-        case "CSS modules":
-            Shared.cssExt = "module.css"
-            break
-        default:
-            Shared.cssExt = "css"
-            break
-    }
 }
 
 export function generateIndexJs() {

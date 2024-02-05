@@ -5,10 +5,10 @@ import path from "path"
 import chalk from "chalk"
 import spawn from "cross-spawn"
 
-import getQuiz from "./helper/quiz"
 import Shared from "./shared/shared"
+import getQuiz from "./helper/quiz"
+import { determineCssExt } from "./utils/utils"
 import {
-    determineCssExt,
     generateCss,
     generateEnv,
     generateGitIgnore,
@@ -18,7 +18,9 @@ import {
     generateTSConfig,
     generateWorkflow,
     generateReadme,
+    generateGitAttributes,
 } from "./generator/generate"
+
 import { Answers } from "./interface/interface"
 
 inquirer.prompt(getQuiz()).then(async (ans: Answers) => {
@@ -34,6 +36,7 @@ inquirer.prompt(getQuiz()).then(async (ans: Answers) => {
         generateSettings()
         generatePackageJson()
         generateGitIgnore()
+        generateGitAttributes()
         generateTSConfig()
         generateEnv()
         generateWorkflow()
