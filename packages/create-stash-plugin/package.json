@@ -1,6 +1,6 @@
 {
     "name": "create-stash-plugin",
-    "version": "0.1.4-alpha",
+    "version": "0.1.5-alpha",
     "description": "Generates boilerplate code for stash-plugin-builder",
     "license": "MIT",
     "repository": {
