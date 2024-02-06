@@ -14,7 +14,7 @@ configDotenv({
 })
 
 export default async function build() {
-    Shared.pluginInDir = Shared.args?.inDir ?? ""
+    Shared.pluginInDir = Shared.args?.inDir ?? process.env.INIT_CWD
 
     Shared.settings = getSettingsYml()
 
