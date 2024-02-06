@@ -1,11 +1,27 @@
 import fs from "fs";
 import path from "path";
+import parseArgs from "minimist";
 import { execSync } from "child_process";
 import { parse as parseYml, stringify as stringifyYml } from "yaml";
+import "dotenv/config";
 
 import config from "./build-config.json" assert { type: "json" };
 
-config.outDir = config.outDir ?? "dist"
+const argv = parseArgs(process.argv.slice(2));
+const isWin = process.platform === "win32";
+config.outDir = config.outDir ?? "dist";
+
+function getArgv(key, shortKey) {
+  return argv[key] || (shortKey ? argv[shortKey] : argv[key[0]]);
+}
+
+config.mode = {};
+config.mode.build = getArgv("build");
+config.mode.dist = getArgv("dist");
+
+if (config.mode.build) {
+  config.outDir = process.env.STASH_PLUGIN_DIR;
+}
 
 class GlobModules {
   getFileContents(filePath) {
@@ -219,13 +235,13 @@ if (config.excludePluginFolders?.length) {
 
 allPluginFolders.normalPluginPaths.forEach(({ pluginPath, pluginDistPath }) => {
   Glob.copy(pluginPath, config.outDir);
-  indexYml.push(Utils.packPlugin(pluginPath, pluginDistPath)); // works only on linux
+  if (!isWin && config.mode.dist) indexYml.push(Utils.packPlugin(pluginPath, pluginDistPath)); // works only on linux
 });
 allPluginFolders.stashPluginBuilderPluginPaths.forEach(({ pluginPath, pluginDistPath }) => {
-  Shell.run(`npx stash-plugin-builder --in=${pluginPath} --out=${config.outDir} --minify`);
-  indexYml.push(Utils.packPlugin(pluginPath, pluginDistPath)); // works only on linux
+  Shell.run(`npx stash-plugin-builder --in=${pluginPath} --out=${config.outDir}${config.mode.dist ? " --minify" : ""}`);
+  if (!isWin && config.mode.dist) indexYml.push(Utils.packPlugin(pluginPath, pluginDistPath)); // works only on linux
 });
 
-if (indexYml.length) Glob.writeYml(path.join(config.outDir, "index.yml"), indexYml);
+if (indexYml.length && !isWin && config.mode.dist) Glob.writeYml(path.join(config.outDir, "index.yml"), indexYml);
 
-if (config.include?.length) Utils.copyExternalFiles(config.include, config.outDir);
+if (config.include?.length && config.mode.dist) Utils.copyExternalFiles(config.include, config.outDir);

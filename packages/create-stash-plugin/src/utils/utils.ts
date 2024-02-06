@@ -2,14 +2,20 @@ import Shared from "../shared/shared"
 
 export function determineCssExt() {
     switch (Shared.ans.cssFramework) {
-        case "SCSS":
+        case "Scss":
             Shared.cssExt = "scss"
             break
-        case "SASS":
+        case "Sass":
             Shared.cssExt = "sass"
             break
-        case "CSS modules":
+        case "Less":
+            Shared.cssExt = "less"
+            break
+        case "Css Modules":
             Shared.cssExt = "module.css"
+            break
+        case "Stylus":
+            Shared.cssExt = "styl"
             break
         default:
             Shared.cssExt = "css"

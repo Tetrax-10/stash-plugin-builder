@@ -97,7 +97,7 @@ export default function getQuiz() {
             type: "list",
             name: "cssFramework",
             message: "CSS framework",
-            choices: ["Vanilla CSS", "SCSS", "SASS", "CSS modules"],
+            choices: ["Vanilla Css", "Scss", "Sass", "Less", "Css Modules", "Stylus"],
             when: (ans: Answers) => ans.boilerplate.includes("CSS"),
         },
     ]

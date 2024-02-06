@@ -23,8 +23,9 @@ export function generatePackageJson() {
                 type: "module",
                 scripts: {
                     build: "stash-plugin-builder",
-                    "build-dist": "stash-plugin-builder --out=dist --minify",
                     watch: "stash-plugin-builder --watch",
+                    "build-all": "node build.js --build",
+                    "build-dist": "node build.js --dist",
                 },
             },
             null,
@@ -91,7 +92,7 @@ export function generateCss() {
     if (!Shared.ans.boilerplate.includes("CSS")) return
 
     let content = getAsset("css/main.css")
-    if (Shared.ans.cssFramework === "SASS") {
+    if (Shared.ans.cssFramework === "Sass" || Shared.ans.cssFramework === "Stylus") {
         content = ".boilerplate-code\n  display: none"
     }
 
@@ -123,6 +124,7 @@ export function generateSettings() {
 
 export function generateEnv() {
     writeFile(getProjectPath(".env"), `STASH_PLUGIN_DIR="${Shared.ans.stashPluginDir}"`)
+    writeFile(getProjectPath(".env.example"), 'STASH_PLUGIN_DIR="path/to/your/stash/plugins"')
 }
 
 export function generateWorkflow() {
