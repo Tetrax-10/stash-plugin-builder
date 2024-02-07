@@ -4,20 +4,28 @@ import parseArgs from "minimist"
 
 import Shared from "./shared/shared"
 import build from "./script"
+import * as Glob from "./utils/glob"
 
-const argv = parseArgs(process.argv.slice(2))
+const args = process.argv.slice(2)
 
-function getArgv(key: string, shortKey?: string) {
-    return argv[key] || (shortKey ? argv[shortKey] : argv[key[0]])
+if (args.length) {
+    const parsedArgs = parseArgs(args)
+
+    function getArgv(key: string, shortKey?: string) {
+        return parsedArgs[key] || (shortKey ? parsedArgs[shortKey] : parsedArgs[key[0]])
+    }
+
+    Shared.args = {
+        build: getArgv("build"), // use this option to trigger build function when no args are passed
+        minify: getArgv("minify"),
+        watch: getArgv("watch"),
+        inDir: getArgv("in"),
+        outDir: getArgv("out"),
+        mainJsPath: getArgv("js"),
+        mainCssPath: getArgv("css"),
+    }
+
+    build()
 }
 
-Shared.args = {
-    minify: getArgv("minify"),
-    watch: getArgv("watch"),
-    inDir: getArgv("in"),
-    outDir: getArgv("out"),
-    mainJsPath: getArgv("js"),
-    mainCssPath: getArgv("css"),
-}
-
-build()
+export default { Glob: Glob }

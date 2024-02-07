@@ -21,6 +21,7 @@ export interface Settings {
 }
 
 export interface parsedArgs {
+    build: boolean
     minify: boolean
     watch: boolean
     inDir: string

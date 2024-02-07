@@ -20,6 +20,7 @@
         "watch": "npm run build -- --watch"
     },
     "type": "module",
+    "main": "dist/index.js",
     "bin": {
         "stash-plugin-builder": "dist/index.js"
     },
