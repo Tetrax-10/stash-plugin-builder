@@ -51,7 +51,7 @@ export function createFolder(folderPath: string) {
     }
 }
 
-export function getAsset(filePath: string, needPath?: boolean): string {
+export function getTemplate(filePath: string, needPath?: boolean): string {
     const assetPath = path.join(__dirname, "../template", filePath)
     if (needPath) {
         return assetPath

@@ -20,7 +20,7 @@ config.mode.build = getArgv("build");
 config.mode.dist = getArgv("dist");
 
 if (config.mode.build) {
-  config.outDir = process.env.STASH_PLUGIN_DIR;
+  config.outDir = path.join(process.env.STASH_PLUGIN_DIR, config.stashPluginSubDir ?? "");
 }
 
 class GlobModules {
@@ -178,10 +178,11 @@ if (config.excludePluginFolders?.length) {
 
 allPluginFolders.normalPluginPaths.forEach(({ pluginPath, pluginDistPath }) => {
   SPB.Glob.copy(pluginPath, config.outDir);
+  console.log("built:", pluginPath);
   if (!isWin && config.mode.dist) indexYml.push(Utils.packPlugin(pluginPath, pluginDistPath)); // works only on linux
 });
 allPluginFolders.stashPluginBuilderPluginPaths.forEach(({ pluginPath, pluginDistPath }) => {
-  Shell.run(`npx stash-plugin-builder --in=${pluginPath} --out=${config.outDir}${config.mode.dist ? " --minify" : ""}`);
+  console.log(Shell.run(`npx stash-plugin-builder --in=${pluginPath} --out=${config.outDir}${config.mode.dist ? " --minify" : ""}`));
   if (!isWin && config.mode.dist) indexYml.push(Utils.packPlugin(pluginPath, pluginDistPath)); // works only on linux
 });
 

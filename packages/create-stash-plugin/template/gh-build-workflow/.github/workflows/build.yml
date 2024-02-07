@@ -25,10 +25,10 @@ jobs:
           node-version: 20.x
 
       - name: Install repository dependencies
-        run: npm ci
+        run: $replace1
 
       - name: Build plugins and themes
-        run: npm run build-all-dist
+        run: $replace2 run build-all-dist
 
       - name: Publish to dist branch
         uses: s0/git-publish-subdir-action@develop

@@ -1,12 +1,12 @@
 import path from "path"
 
 import Shared from "../shared/shared"
-import { copy, createFolder, getAsset, getProjectPath, writeFile, writeYml } from "../utils/glob"
+import { copy, createFolder, getTemplate, getProjectPath, writeFile, writeYml } from "../utils/glob"
 import { replaceContent } from "../utils/utils"
 import { Settings } from "../interface/interface"
 
 export function generateGitIgnore() {
-    copy(getAsset("gitignore.txt", true), getProjectPath(".gitignore"), true)
+    copy(getTemplate("gitignore.txt", true), getProjectPath(".gitignore"), true)
 }
 
 export function generateGitAttributes() {
@@ -25,8 +25,8 @@ export function generatePackageJson() {
                     build: "stash-plugin-builder --build",
                     watch: "stash-plugin-builder --watch",
                     "build-dist": "stash-plugin-builder --out=dist --minify",
-                    "build-all": "node --no-warnings build.js --build",
-                    "build-all-dist": "node --no-warnings build.js --dist",
+                    "build-all": "node --no-warnings build.js --script --build",
+                    "build-all-dist": "node --no-warnings build.js --script --dist",
                 },
             },
             null,
@@ -71,19 +71,19 @@ export function generateIndexJs() {
 
     let content = ""
     if (Shared.ans.isReact) {
-        content = replaceContent(getAsset("js/index.txt"), ['import Button from "./components/Button/Button"\n\n', "Button()"])
+        content = replaceContent(getTemplate("js/index.txt"), ['import Button from "./components/Button/Button"\n\n', "Button()"])
 
-        writeFile(getProjectPath(`src/components/Button/Button.${Shared.jsExt}`), getAsset("components/Button/Button.jsx").replace("css", Shared.cssExt))
+        writeFile(getProjectPath(`src/components/Button/Button.${Shared.jsExt}`), getTemplate("components/Button/Button.jsx").replace("css", Shared.cssExt))
 
         if (Shared.cssExt === "sass") {
             writeFile(getProjectPath("src/components/Button/Button.sass"), ".demo-button\n  background-color: red")
         } else {
-            copy(getAsset("components/Button/Button.css", true), getProjectPath(`src/components/Button/Button.${Shared.cssExt}`), true)
+            copy(getTemplate("components/Button/Button.css", true), getProjectPath(`src/components/Button/Button.${Shared.cssExt}`), true)
         }
 
         Shared.devDependencies.push("@types/react")
     } else {
-        content = replaceContent(getAsset("js/index.txt"), ["", '"Hello"'])
+        content = replaceContent(getTemplate("js/index.txt"), ["", '"Hello"'])
     }
 
     writeFile(getProjectPath(`src/index.${Shared.jsExt}`), content)
@@ -92,7 +92,7 @@ export function generateIndexJs() {
 export function generateCss() {
     if (!Shared.ans.boilerplate.includes("CSS")) return
 
-    let content = getAsset("css/main.css")
+    let content = getTemplate("css/main.css")
     if (Shared.ans.cssFramework === "Sass" || Shared.ans.cssFramework === "Stylus") {
         content = ".boilerplate-code\n  display: none"
     }
@@ -128,10 +128,19 @@ export function generateEnv() {
     writeFile(getProjectPath(".env.example"), 'STASH_PLUGIN_DIR="path/to/your/stash/plugins"')
 }
 
-export function generateWorkflow() {
-    copy(getAsset("gh-build-workflow", true), getProjectPath(), true)
+export function generateWorkflow(packageManager: string) {
+    copy(getTemplate("gh-build-workflow", true), getProjectPath(), true)
+
+    let content = ""
+    if (packageManager === "npm") {
+        content = replaceContent(getTemplate("gh-build-workflow/.github/workflows/build.yml"), ["npm ci", "npm"])
+    } else {
+        content = replaceContent(getTemplate("gh-build-workflow/.github/workflows/build.yml"), ["yarn install --frozen-lockfile", "yarn"])
+    }
+
+    writeFile(getProjectPath(".github/workflows/build.yml"), content)
 }
 
 export function generateReadme() {
-    copy(getAsset("README.md", true), getProjectPath())
+    copy(getTemplate("README.md", true), getProjectPath())
 }

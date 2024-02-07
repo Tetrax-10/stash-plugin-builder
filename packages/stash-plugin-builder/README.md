@@ -80,6 +80,7 @@ Note: You don't need this if you have generated the boilerplate with **`npx crea
     "plugins": ["plugins/*", "themes/MyTheme"], // use this only if you have monorepo
     "outDir": "dist", // if you edit this, update the workflow file too
     "excludePluginFolders": "MyTestPlugin", // plugin's folder name not id
+    "stashPluginSubDir": "my-plugins-dev", // optional sub-dir inside your stash plugins folder
     "include": ["README.md", "LICENSE", "foler-one", "foler-two/*"] // these files will be copied to dist branch
 }
 ```

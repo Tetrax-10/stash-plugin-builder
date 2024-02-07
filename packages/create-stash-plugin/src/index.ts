@@ -30,6 +30,8 @@ inquirer.prompt(getQuiz()).then(async (ans: Answers) => {
         Shared.projectDir = projectDir
         Shared.ans = ans
 
+        const packageManager = (process.env.npm_config_user_agent || "").indexOf("yarn") === 0 ? "yarn" : "npm"
+
         determineCssExt()
         generateIndexJs()
         generateCss()
@@ -39,10 +41,9 @@ inquirer.prompt(getQuiz()).then(async (ans: Answers) => {
         generateGitAttributes()
         generateTSConfig()
         generateEnv()
-        generateWorkflow()
+        generateWorkflow(packageManager)
         generateReadme()
 
-        const packageManager = (process.env.npm_config_user_agent || "").indexOf("yarn") === 0 ? "yarn" : "npm"
         const exeResult = spawn.sync(`cd ${projectDir} && ${packageManager} ${packageManager === "npm" ? "install" : "add"} -D ${Shared.devDependencies.sort().join(" ")}`, {
             stdio: "inherit",
             shell: true,
