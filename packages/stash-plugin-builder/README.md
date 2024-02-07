@@ -207,3 +207,7 @@ ui:
 ## Credits
 
 Inspired from [spicetify-creator](https://github.com/spicetify/spicetify-creator) by [@FlafyDev](https://github.com/FlafyDev)
+
+</br>
+
+Made with Love💕 by [Tetrax-10](https://github.com/Tetrax-10)

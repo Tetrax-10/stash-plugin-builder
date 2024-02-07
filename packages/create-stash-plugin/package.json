@@ -2,6 +2,8 @@
     "name": "create-stash-plugin",
     "version": "0.1.9-alpha",
     "description": "Generates boilerplate code for stash-plugin-builder",
+    "funding": "https://github.com/sponsors/Tetrax-10",
+    "author": "Tetrax-10",
     "license": "MIT",
     "repository": {
         "type": "git",

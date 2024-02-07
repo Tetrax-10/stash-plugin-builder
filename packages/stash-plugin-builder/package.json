@@ -2,6 +2,8 @@
     "name": "stash-plugin-builder",
     "version": "0.1.6-alpha",
     "description": "Build stash plugins with React, SCSS and other libraries with TS support",
+    "funding": "https://github.com/sponsors/Tetrax-10",
+    "author": "Tetrax-10",
     "license": "MIT",
     "repository": {
         "type": "git",
