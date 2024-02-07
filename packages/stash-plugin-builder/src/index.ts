@@ -8,7 +8,7 @@ import * as Glob from "./utils/glob"
 
 const args = process.argv.slice(2)
 
-if (args.length) {
+if (args.length && !args.includes("--script")) {
     const parsedArgs = parseArgs(args)
 
     function getArgv(key: string, shortKey?: string) {
