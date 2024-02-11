@@ -30,7 +30,7 @@ export default async function buildPlugin() {
 
     // add main js to esbuild entry points
     if (isProcessJS) {
-        writeFile(tempIndexJsPath, replaceContent(getAsset("pluginWrapper.js"), [mainJsAbsolutePath]))
+        writeFile(tempIndexJsPath, replaceContent(getAsset("callMainFunc.js"), [mainJsAbsolutePath]))
         esbuildEntryPoints.push(tempIndexJsPath)
     }
 
