@@ -82,6 +82,7 @@ export function generateIndexJs() {
         }
 
         Shared.devDependencies.push("@types/react")
+        Shared.devDependencies.push("@types/react-dom")
     } else {
         content = replaceContent(getTemplate("js/index.txt"), ["", '"Hello"'])
     }
