@@ -6,7 +6,7 @@ import Shared from "./shared/shared"
 import buildPlugin from "./builder/plugin"
 import getSettingsYml from "./helpers/settingsYml"
 import getEsbuildOptions from "./helpers/esbuidConfig"
-import { isUpperCamelCase } from "./utils/utils"
+import { isLowerCamelCase } from "./utils/utils"
 import { createFolder, unixPath, getRootPath } from "./utils/glob"
 
 configDotenv({
@@ -23,8 +23,8 @@ export default async function build() {
     Shared.settings.ui.javascript = unixPath(Shared.args.mainJsPath ?? Shared.settings.ui.javascript ?? "")
     Shared.settings.ui.css = unixPath(Shared.args.mainCssPath ?? Shared.settings.ui.css ?? "")
 
-    if (!isUpperCamelCase(Shared.settings.id)) {
-        console.log(chalk.red("settings.yml: 'id' value should be upper camel case. eg: 'MyStashPlugin'"))
+    if (!isLowerCamelCase(Shared.settings.id)) {
+        console.log(chalk.red("settings.yml: 'id' value should be lower camel case. eg: 'myStashPlugin'"))
         process.exit()
     } else if (!Shared.settings.version) {
         console.log(chalk.red("settings.yml: version info is missing"))
