@@ -1,4 +1,4 @@
-;(async () => {
+;(() => {
     async function callGQL(reqData) {
         const options = {
             method: "POST",
@@ -52,6 +52,7 @@
         }
     }
 
+    // replace "$replace1" with something like this: [{id: "StashUserscriptLibrary", source: "https://stashapp.github.io/CommunityScripts/stable/index.yml"}]
     const requiredPlugins = $replace1
 
     let pluginInstalled = false
