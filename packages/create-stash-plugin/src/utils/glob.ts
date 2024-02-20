@@ -28,14 +28,12 @@ export function writeFile(filePath: string, content: string, append?: boolean, p
 
     if (append) {
         fs.appendFileSync(filePath, content)
-        return
     } else if (prepend) {
         const oldContent = getFileContents(filePath)
         fs.writeFileSync(filePath, content + oldContent)
-        return
+    } else {
+        fs.writeFileSync(filePath, content)
     }
-
-    fs.writeFileSync(filePath, content)
 }
 
 export function fsExsists(paths: string[] | string): string[] | boolean {

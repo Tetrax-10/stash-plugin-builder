@@ -19,13 +19,18 @@ export function getFileContents(filePath: string): string {
     return fs.readFileSync(filePath, "utf-8")
 }
 
-export function writeFile(filePath: string, content: string, append?: boolean) {
-    if (!append) {
-        fs.writeFileSync(filePath, content)
-        return
-    }
+export function writeFile(filePath: string, content: string, append?: boolean, prepend?: boolean) {
+    const parentFolder = path.dirname(filePath)
+    if (!fsExsists(parentFolder)) createFolder(parentFolder)
 
-    fs.appendFileSync(filePath, content)
+    if (append) {
+        fs.appendFileSync(filePath, content)
+    } else if (prepend) {
+        const oldContent = getFileContents(filePath)
+        fs.writeFileSync(filePath, content + oldContent)
+    } else {
+        fs.writeFileSync(filePath, content)
+    }
 }
 
 export function fsExsists(paths: string | string[]): boolean | string[] {
