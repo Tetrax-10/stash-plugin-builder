@@ -4,10 +4,10 @@ import * as esbuild from "esbuild"
 
 import Shared from "../shared/shared"
 import buildPluginYml from "./yml"
-import { isJs, replaceContent } from "../utils/utils"
+import { replaceContent } from "../utils/utils"
 import { buildExternalFiles } from "./externalFiles"
 import { initReloadServer, webSocketData } from "../helpers/reloadServer"
-import { createFolder, fsExsists, writeFile, fsDelete, getAsset, unixPath, getBuildPath, getTempPath, getFileContents } from "../utils/glob"
+import { createFolder, fsExsists, writeFile, fsDelete, getAsset, unixPath, getBuildPath, getTempPath } from "../utils/glob"
 
 import { CompiledCode } from "../interfaces/interface"
 
@@ -42,14 +42,7 @@ export default async function buildPlugin() {
     if (typeof Shared.settings.ui.include === "object" && Shared.settings.ui.include?.length) {
         const availableIncludes = fsExsists(Shared.settings.ui.include)
         if (typeof availableIncludes === "object" && availableIncludes.length) {
-            for (const _path of availableIncludes) {
-                let filePath = _path
-                if (isJs(_path)) {
-                    filePath = getTempPath(path.basename(_path))
-                    writeFile(filePath, replaceContent(getAsset("wrapper.js"), [getFileContents(_path)]))
-                }
-                esbuildEntryPoints.push(filePath)
-            }
+            esbuildEntryPoints.push(...availableIncludes)
         }
     }
 

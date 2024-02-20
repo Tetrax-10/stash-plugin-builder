@@ -1,5 +1,3 @@
-import path from "path"
-
 export function isUpperCamelCase(str: string): boolean {
     return /^[A-Z][a-zA-Z0-9]*$/.test(str)
 }
@@ -10,9 +8,4 @@ export function replaceContent(content: string, values: string[]): string {
     })
 
     return content
-}
-
-export function isJs(filePath: string) {
-    const allowedExtensions = [".js", ".jsx", ".ts", ".tsx"]
-    return allowedExtensions.includes(path.extname(filePath))
 }
