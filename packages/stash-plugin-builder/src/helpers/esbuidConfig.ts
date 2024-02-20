@@ -16,6 +16,8 @@ export default function getEsbuildOptions(): esbuild.BuildOptions {
         "@fortawesome/free-regular-svg-icons": "PluginApi.libraries.FontAwesomeRegular",
         "@fortawesome/free-solid-svg-icons": "PluginApi.libraries.FontAwesomeSolid",
         "react-intl": "PluginApi.libraries.Intl",
+        mousetrap: "PluginApi.libraries.Mousetrap",
+        "mousetrap-pause": "PluginApi.libraries.MousetrapPause",
         "react-router-dom": "PluginApi.libraries.ReactRouterDOM",
     }
 
