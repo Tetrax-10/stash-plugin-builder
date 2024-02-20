@@ -5,8 +5,8 @@ import * as esbuild from "esbuild"
 import Shared from "../shared/shared"
 import buildPluginYml from "./yml"
 import { replaceContent } from "../utils/utils"
-import { buildExternalFiles } from "./externalFiles"
-import { initReloadServer, webSocketData } from "../helpers/reloadServer"
+import { buildExternalFiles, watchExternalFiles } from "./externalFiles"
+import { initReloadServer, reloadStash } from "../helpers/reloadServer"
 import { createFolder, fsExsists, writeFile, fsDelete, getAsset, unixPath, getBuildPath, getTempPath } from "../utils/glob"
 
 import { CompiledCode } from "../interfaces/interface"
@@ -76,6 +76,7 @@ export default async function buildPlugin() {
         ...Shared.esbuildOptions,
     }
 
+    let isFirstBuild = true
     async function afterBundle(result: esbuild.BuildResult) {
         // get organized object of compiled js and css
         const compiledCode = result.outputFiles?.reduce((acc: CompiledCode, item: esbuild.OutputFile) => {
@@ -119,18 +120,14 @@ export default async function buildPlugin() {
 
         // builds yml file for the plugin
         buildPluginYml(compiledCode?.js?.length, compiledCode?.css?.length)
-        buildExternalFiles()
+        if (isFirstBuild) {
+            buildExternalFiles()
+            isFirstBuild = false
+        }
 
         console.log(chalk.green(`${Shared.settings.name} built ✅`))
 
-        // tells stash-plugin-builder's reload client to reload the stash website
-        if (Shared.args.watch && webSocketData.socket?.send) {
-            webSocketData.socket.send("reload")
-        } else if (webSocketData.connected) {
-            console.log(chalk.red("reload-server: connection lost to stash website! ❌"))
-            console.log(chalk.blue("reload-server: reload stash website to re-connect 🔄️"))
-            webSocketData.connected = false
-        }
+        reloadStash()
     }
 
     // initialize reload server
@@ -152,6 +149,7 @@ export default async function buildPlugin() {
         console.log(chalk.blue("Watching..."))
         initReloadServer()
         esbuildWatch()
+        watchExternalFiles()
     } else {
         const result = await esbuild.build(esbuildOptions)
         await afterBundle(result)

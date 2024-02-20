@@ -14,12 +14,12 @@ interface WebSocketData {
         | undefined
 }
 
-export const webSocketData: WebSocketData = {
+const webSocketData: WebSocketData = {
     connected: false,
     socket: undefined,
 }
 
-export function installReloadClient(stashPluginDir: string) {
+function installReloadClient(stashPluginDir: string) {
     stashPluginDir = path.join(stashPluginDir, "stash-plugin-builder")
     const ReloadClientJsPath = path.join(stashPluginDir, "ReloadClient/ReloadClient.js")
     const ReloadClientYmlPath = path.join(stashPluginDir, "ReloadClient/ReloadClient.yml")
@@ -59,4 +59,15 @@ export function initReloadServer() {
     })
 
     console.log(chalk.blue("reload-server: reload stash website to establish a connection for auto live-reloading"))
+}
+
+// tells stash-plugin-builder's reload client to reload the stash website
+export function reloadStash() {
+    if (Shared.args.watch && webSocketData.socket?.send) {
+        webSocketData.socket.send("reload")
+    } else if (webSocketData.connected) {
+        console.log(chalk.red("reload-server: connection lost to stash website! ❌"))
+        console.log(chalk.blue("reload-server: reload stash website to re-connect 🔄️"))
+        webSocketData.connected = false
+    }
 }
