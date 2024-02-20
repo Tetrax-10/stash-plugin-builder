@@ -2,7 +2,7 @@ import path from "path"
 
 import Shared from "../shared/shared"
 import { copy, createFolder, getTemplate, getProjectPath, writeFile, writeYml } from "../utils/glob"
-import { replaceContent } from "../utils/utils"
+import { downloadContent, replaceContent } from "../utils/utils"
 import { Settings } from "../interface/interface"
 
 export function generateGitIgnore() {
@@ -60,6 +60,13 @@ export function generateTSConfig() {
             2
         )
     )
+}
+
+export async function downloadTypes() {
+    createFolder(getProjectPath("src/@types"))
+
+    await downloadContent("https://raw.githubusercontent.com/stashapp/stash/develop/ui/v2.5/src/pluginApi.d.ts", getProjectPath("src/@types/pluginApi.d.ts"))
+    writeFile(getProjectPath("src/@types/pluginApi.d.ts"), "// @ts-nocheck\n", false, true)
 }
 
 export function generateIndexJs() {

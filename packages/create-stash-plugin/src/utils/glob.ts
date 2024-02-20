@@ -22,16 +22,20 @@ export function getFileContents(filePath: string): string {
     return fs.readFileSync(filePath, "utf-8")
 }
 
-export function writeFile(filePath: string, content: string, append?: boolean) {
+export function writeFile(filePath: string, content: string, append?: boolean, prepend?: boolean) {
     const parentFolder = path.dirname(filePath)
     if (!fsExsists(parentFolder)) createFolder(parentFolder)
 
-    if (!append) {
-        fs.writeFileSync(filePath, content)
+    if (append) {
+        fs.appendFileSync(filePath, content)
+        return
+    } else if (prepend) {
+        const oldContent = getFileContents(filePath)
+        fs.writeFileSync(filePath, content + oldContent)
         return
     }
 
-    fs.appendFileSync(filePath, content)
+    fs.writeFileSync(filePath, content)
 }
 
 export function fsExsists(paths: string[] | string): string[] | boolean {

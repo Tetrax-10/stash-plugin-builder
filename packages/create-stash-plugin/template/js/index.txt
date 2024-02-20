@@ -1,3 +1,8 @@
+/// <reference path="@types/pluginApi.d.ts" />
+
 $replace1export default () => {
   console.log($replace2)
 }
+
+// To obtain type support for PluginApi.libraries, simply install its respective "@types/library" or the library itself.
+// These libraries will not be bundled, as stash-plugin-builder will automatically maps them to PluginApi.libraries.

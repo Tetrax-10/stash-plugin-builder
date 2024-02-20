@@ -19,6 +19,7 @@ import {
     generateWorkflow,
     generateReadme,
     generateGitAttributes,
+    downloadTypes,
 } from "./generator/generate"
 
 import { Answers } from "./interface/interface"
@@ -40,6 +41,7 @@ inquirer.prompt(getQuiz()).then(async (ans: Answers) => {
         generateGitIgnore()
         generateGitAttributes()
         generateTSConfig()
+        downloadTypes()
         generateEnv()
         generateWorkflow(packageManager)
         generateReadme()
@@ -50,7 +52,7 @@ inquirer.prompt(getQuiz()).then(async (ans: Answers) => {
         })
         if (exeResult.error) throw "Couldn't install dependencies: " + exeResult.error.message
 
-        console.log(`\n${chalk.green("Success: ")}${ans.isReact ? "React " : ""}Plugin boilerplate has been generated`)
+        console.log(`\n${chalk.green("Success:")} Boilerplate has been generated`)
         console.log(chalk.blue("\nPlease read the docs for further customization:"), chalk.yellow("https://github.com/Tetrax-10/stash-plugin-builder"))
     } catch (err) {
         console.error(`\n${chalk.red("Error, something went wrong:")}`, err)

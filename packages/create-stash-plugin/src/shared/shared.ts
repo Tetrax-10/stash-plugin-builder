@@ -12,8 +12,8 @@ const Shared: SharedInterface = {
         isReact: false,
         cssFramework: "",
     },
-    jsExt: "",
-    cssExt: "",
+    jsExt: "js",
+    cssExt: "css",
     mainCssPath: "",
     devDependencies: ["stash-plugin-builder"],
 }

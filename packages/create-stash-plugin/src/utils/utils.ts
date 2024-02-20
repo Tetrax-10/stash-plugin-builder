@@ -1,3 +1,6 @@
+import https from "https"
+import fs from "fs"
+
 import Shared from "../shared/shared"
 
 export function determineCssExt() {
@@ -29,4 +32,22 @@ export function replaceContent(content: string, values: string[]): string {
     })
 
     return content
+}
+
+export async function downloadContent(url: string, _path: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+        const fileStream = fs.createWriteStream(_path)
+        https
+            .get(url, (res) => {
+                res.pipe(fileStream)
+                fileStream.on("finish", () => {
+                    fileStream.close()
+                    resolve()
+                })
+            })
+            .on("error", (err) => {
+                // Delete the file async if an error occurs
+                fs.unlink(_path, () => reject(err))
+            })
+    })
 }

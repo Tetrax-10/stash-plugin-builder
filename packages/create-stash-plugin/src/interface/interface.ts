@@ -12,8 +12,8 @@ export interface Answers {
 export interface SharedInterface {
     projectDir: string
     ans: Answers
-    jsExt: string
-    cssExt: string
+    jsExt: "js" | "ts" | "jsx" | "tsx"
+    cssExt: "css" | "scss" | "sass" | "less" | "module.css" | "styl"
     mainCssPath: string
     devDependencies: string[]
 }
