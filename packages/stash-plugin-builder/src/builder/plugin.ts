@@ -16,7 +16,7 @@ export default async function buildPlugin() {
     const compiledCssPath = getBuildPath(`${Shared.settings.id}.css`)
 
     const tempPath = getTempPath()
-    const tempIndexJsPath = getTempPath("index.js")
+    const tempIndexJsPath = getTempPath(`${Shared.settings.id}.js`)
 
     const esbuildEntryPoints: string[] = []
 
@@ -95,19 +95,26 @@ export default async function buildPlugin() {
         // write all js contents
         if (compiledCode?.js?.length) {
             let FinalCompiledJs = ""
-            compiledCode.js.forEach((compiledJs: string) => {
-                compiledJs = Shared.args.minify ? compiledJs.trim() : compiledJs
-                FinalCompiledJs += compiledJs + "\n"
+            compiledCode.js.forEach((code) => {
+                let compiledJsCode = code
+                if (Shared.args.minify) {
+                    compiledJsCode = replaceContent(getAsset("wrapper.min.js"), [compiledJsCode.trim()])
+                } else {
+                    compiledJsCode = replaceContent(getAsset("wrapper.js"), [compiledJsCode])
+                }
+
+                FinalCompiledJs += compiledJsCode
             })
-            writeFile(compiledJsPath, replaceContent(getAsset("wrapper.js"), [FinalCompiledJs.trim()]))
+            writeFile(compiledJsPath, FinalCompiledJs)
         }
 
         // write all css contents
         if (compiledCode?.css?.length) {
-            compiledCode.css.forEach((compiledCss: string, index: number) => {
-                compiledCss = Shared.args.minify ? compiledCss.trim() : compiledCss
-                writeFile(compiledCssPath, compiledCss, index === 0 ? false : true)
+            let FinalCompiledCss = ""
+            compiledCode?.css?.forEach((code) => {
+                FinalCompiledCss += Shared.args.minify ? code.trim() : code
             })
+            writeFile(compiledCssPath, FinalCompiledCss)
         }
 
         // builds yml file for the plugin
