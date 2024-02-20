@@ -1,6 +1,6 @@
 {
     "name": "create-stash-plugin",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Generates boilerplate code for stash-plugin-builder",
     "funding": "https://github.com/sponsors/Tetrax-10",
     "author": "Tetrax-10",
