@@ -18,6 +18,7 @@ export interface Settings {
         ]
     }
     include?: string[]
+    externalPath?: string[]
 }
 
 export interface parsedArgs {

@@ -12,6 +12,8 @@ export default function buildPluginYml(isProcessJS: number | undefined, isProces
     delete pluginYml.stashPluginSubDir
     delete pluginYml.ui?.include
     delete pluginYml.include
+    delete pluginYml.externalPath
+
     if (Shared.dependencies.length) {
         pluginYml.ui.requires = Shared.dependencies
     } else {

@@ -111,7 +111,7 @@ ui:
           source: https://stashapp.github.io/CommunityScripts/stable/index.yml # cross-source plugin source url
     # the following assets and csp structure are just default plugin.yml structure
     assets: # optional list of assets
-        urlPrefix: fsLocation
+        /: assets
     csp: # content-security policy overrides
         script-src:
             - http://alloweddomain.com
@@ -123,6 +123,8 @@ include: # include external files
     - ./assets # assets folder will be copied to the output folder
     - ./python/foo.py # foo.py will be copi...
     - ./configs/* # all contents inside the configs folder will be copi...
+externalPath:
+    - /plugin/MyPlugin/assets/background.png # tell esbuild, its a external path and not a file path
 # the following are just default plugin.yml structure and they are used for plugin tasks only
 exec:
     - python

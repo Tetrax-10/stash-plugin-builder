@@ -21,12 +21,15 @@ export default function getEsbuildOptions(): esbuild.BuildOptions {
         "react-router-dom": "PluginApi.libraries.ReactRouterDOM",
     }
 
+    const settingsYmlExternalPaths = Shared.settings?.externalPath?.length ? Shared.settings.externalPath : []
+    const tsConfigPath = getPluginPath("tsconfig.json")
+
     return {
         platform: "browser",
         format: "esm",
-        external: Object.keys(externalPackages),
+        external: [...Object.keys(externalPackages), ...settingsYmlExternalPaths],
         bundle: true,
-        ...(fsExsists(getPluginPath("tsconfig.json")) ? { tsconfig: getPluginPath("tsconfig.json") } : {}),
+        ...(fsExsists(tsConfigPath) ? { tsconfig: tsConfigPath } : {}),
         plugins: [
             postCssPlugin.default({
                 plugins: [autoprefixer],
