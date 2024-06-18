@@ -107,8 +107,8 @@ ui:
     requires:
         - MyUtilsLibrary # local plugin id
         - MyReactComponentsLibrary # local plugin id
-        - id: StashUserscriptLibrary # cross-source plugin id
-          source: https://stashapp.github.io/CommunityScripts/stable/index.yml # cross-source plugin source url
+        - id: TetraxUserscriptLibrary # cross-source plugin id
+          source: https://tetrax-10.github.io/stash-stuffs/index.yml # cross-source plugin source url
     # the following assets and csp structure are just default plugin.yml structure
     assets: # optional list of assets
         /: assets
@@ -149,8 +149,6 @@ ui:
     requires:
         - MyUtilsLibrary # local plugin id
         - MyReactComponentsLibrary # local plugin id
-        - id: StashUserscriptLibrary # cross-source plugin id
-          source: https://stashapp.github.io/CommunityScripts/stable/index.yml # cross-source plugin source url
         - id: TetraxUserscriptLibrary # cross-source plugin id
           source: https://tetrax-10.github.io/stash-stuffs/index.yml # cross-source plugin source url
 ```
